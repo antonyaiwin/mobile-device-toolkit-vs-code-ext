@@ -1,23 +1,194 @@
 {
   "name": "emulator-extended-controls",
   "displayName": "Emulator Extended Controls",
-  "description": "Emulator Extended Controls adds Android Studio–style emulator controls directly into VS Code’s debug toolbar. Quickly manage Dark Mode, Font Size, Display Size, Layout Bounds, Screen Recording, Screenshots, and more without leaving your editor.The extension integrates seamlessly with VS Code’s floating debug toolbar and supports multiple connected Android devices and emulators with instant device switching. Users can also enable optional quick-action toolbar buttons for frequently used controls.Built for Flutter and Android developers who want faster access to emulator tools while staying entirely inside VS Code.",
-  "version": "0.0.1",
+  "description": "Android Studio–style emulator controls inside VS Code's debug toolbar. Manage Dark Mode, Font Size, Display Density, Layout Bounds, Screenshots, Screen Recording, and more without leaving your editor. Supports multiple connected Android devices and emulators with instant device switching.",
+  "version": "1.0.0",
+  "publisher": "emulator-extended-controls",
+  "icon": "assets/icon.png",
   "engines": {
-    "vscode": "^1.120.0"
+    "vscode": "^1.100.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Debuggers"
   ],
-  "activationEvents": [],
+  "keywords": [
+    "android",
+    "emulator",
+    "adb",
+    "flutter",
+    "avd",
+    "debug",
+    "toolbar",
+    "device"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/emulator-extended-controls"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "emulator-extended-controls.helloWorld",
-        "title": "Hello World"
+        "command": "emulator-extended-controls.openControls",
+        "title": "Open Emulator Controls",
+        "category": "Emulator",
+        "icon": "$(device-mobile)"
+      },
+      {
+        "command": "emulator-extended-controls.selectDevice",
+        "title": "Select Android Device",
+        "category": "Emulator",
+        "icon": "$(device-mobile)"
+      },
+      {
+        "command": "emulator-extended-controls.refreshDevices",
+        "title": "Refresh Device List",
+        "category": "Emulator",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "emulator-extended-controls.toggleDarkMode",
+        "title": "Toggle Dark Mode",
+        "category": "Emulator",
+        "icon": "$(color-mode)"
+      },
+      {
+        "command": "emulator-extended-controls.takeScreenshot",
+        "title": "Take Screenshot",
+        "category": "Emulator",
+        "icon": "$(device-camera)"
+      },
+      {
+        "command": "emulator-extended-controls.startRecording",
+        "title": "Record Screen",
+        "category": "Emulator",
+        "icon": "$(record)"
+      },
+      {
+        "command": "emulator-extended-controls.toggleLayoutBounds",
+        "title": "Toggle Layout Bounds",
+        "category": "Emulator",
+        "icon": "$(layout)"
+      },
+      {
+        "command": "emulator-extended-controls.rotateDevice",
+        "title": "Rotate Device",
+        "category": "Emulator",
+        "icon": "$(arrow-swap)"
       }
-    ]
+    ],
+    "menus": {
+      "debug/toolBar": [
+        {
+          "command": "emulator-extended-controls.openControls",
+          "when": "emulator-extended-controls.hasDevices",
+          "group": "navigation@100"
+        },
+        {
+          "command": "emulator-extended-controls.toggleDarkMode",
+          "when": "emulator-extended-controls.showDarkMode",
+          "group": "navigation@101"
+        },
+        {
+          "command": "emulator-extended-controls.takeScreenshot",
+          "when": "emulator-extended-controls.showScreenshot",
+          "group": "navigation@102"
+        },
+        {
+          "command": "emulator-extended-controls.startRecording",
+          "when": "emulator-extended-controls.showRecord",
+          "group": "navigation@103"
+        },
+        {
+          "command": "emulator-extended-controls.toggleLayoutBounds",
+          "when": "emulator-extended-controls.showLayoutBounds",
+          "group": "navigation@104"
+        },
+        {
+          "command": "emulator-extended-controls.rotateDevice",
+          "when": "emulator-extended-controls.showRotate",
+          "group": "navigation@105"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "emulator-extended-controls.openControls",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.selectDevice",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.refreshDevices",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.toggleDarkMode",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.takeScreenshot",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.startRecording",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.toggleLayoutBounds",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.rotateDevice",
+          "when": "true"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Emulator Extended Controls",
+      "properties": {
+        "emulator-extended-controls.autoDetectDevices": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect and monitor connected Android devices. When enabled, the toolbar updates as devices connect or disconnect."
+        },
+        "emulator-extended-controls.showDarkModeButton": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a dedicated Dark Mode toggle button in the debug toolbar (requires a connected device)."
+        },
+        "emulator-extended-controls.showScreenshotButton": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a dedicated Screenshot button in the debug toolbar (requires a connected device)."
+        },
+        "emulator-extended-controls.showRecordButton": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a dedicated Screen Recording button in the debug toolbar (requires a connected device)."
+        },
+        "emulator-extended-controls.showLayoutBoundsButton": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a dedicated Layout Bounds toggle button in the debug toolbar (requires a connected device)."
+        },
+        "emulator-extended-controls.showRotateButton": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a dedicated Rotate Device button in the debug toolbar (requires a connected device)."
+        },
+        "emulator-extended-controls.outputDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "Directory to save screenshots and screen recordings. Defaults to an 'emulator-captures' folder in the workspace root when left empty."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -34,15 +205,17 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.120.0",
+    "@types/jest": "^30.0.0",
+    "@types/jsdom": "^28.0.3",
     "@types/mocha": "^10.0.10",
-    "@types/node": "22.x",
-    "typescript-eslint": "^8.56.1",
-    "eslint": "^9.39.3",
+    "@types/node": "^22.19.20",
+    "@types/vscode": "1.107.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.27.3",
+    "eslint": "^9.39.3",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.9.3",
-    "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2"
+    "typescript-eslint": "^8.56.1"
   }
 }

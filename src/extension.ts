@@ -1,26 +1,74 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { AdbService } from './services/adbService';
+import { DeviceService } from './services/deviceService';
+import { SettingsService } from './services/settingsService';
+import { ToolbarService } from './services/toolbarService';
+import { QuickPickService } from './ui/quickPickService';
+import { registerDeviceCommands } from './commands/deviceCommands';
+import { registerCaptureCommands } from './commands/captureCommands';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+/**
+ * Extension entry point – called by VS Code when the extension is activated.
+ *
+ * Activation events (defined in package.json):
+ *  - onStartupFinished  (lazy activation; the toolbar `when` clause drives visibility)
+ *  - onCommand:emulator-extended-controls.openControls
+ */
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
+  console.log('[emulator-extended-controls] Extension activating…');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "emulator-extended-controls" is now active!');
+  // ── Service instantiation (dependency injection) ──────────────────────────
+  const adbService = new AdbService();
+  const settingsService = new SettingsService();
+  const deviceService = new DeviceService(adbService);
+  const toolbarService = new ToolbarService(deviceService, settingsService);
+  const quickPickService = new QuickPickService(adbService, deviceService, context);
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('emulator-extended-controls.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Emulator Extended Controls!');
-	});
+  // ── Register disposables ──────────────────────────────────────────────────
+  context.subscriptions.push(deviceService);
+  context.subscriptions.push(settingsService);
 
-	context.subscriptions.push(disposable);
+  // ── Wire up toolbar visibility ─────────────────────────────────────────────
+  toolbarService.initialize();
+
+  // ── Register commands ─────────────────────────────────────────────────────
+  registerDeviceCommands(context, adbService, deviceService, quickPickService);
+  registerCaptureCommands(context, adbService, deviceService, quickPickService);
+
+  // ── Start device polling ──────────────────────────────────────────────────
+  const settings = settingsService.getSettings();
+  deviceService.startPolling(settings.autoDetectDevices);
+
+  // Re-start / stop polling when the setting changes
+  settingsService.onDidChangeSettings((newSettings) => {
+    deviceService.stopPolling();
+    deviceService.startPolling(newSettings.autoDetectDevices);
+    toolbarService.refresh();
+  });
+
+  // Notify user if ADB is not found on first activation
+  const adbAvailable = await adbService.isAdbAvailable();
+  if (!adbAvailable) {
+    vscode.window.showWarningMessage(
+      'Emulator Extended Controls: ADB not found in PATH. ' +
+      'Please install Android SDK Platform Tools and restart VS Code.',
+      'Learn More'
+    ).then((selection) => {
+      if (selection === 'Learn More') {
+        vscode.env.openExternal(
+          vscode.Uri.parse('https://developer.android.com/tools/releases/platform-tools')
+        );
+      }
+    });
+  }
+
+  console.log('[emulator-extended-controls] Extension activated.');
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+/**
+ * Called when the extension is deactivated.
+ * Subscriptions are automatically disposed by VS Code via context.subscriptions.
+ */
+export function deactivate(): void {
+  console.log('[emulator-extended-controls] Extension deactivated.');
+}
