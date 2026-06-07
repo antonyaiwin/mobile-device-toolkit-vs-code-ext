@@ -156,7 +156,7 @@
         {
           "command": "emulator-extended-controls.openControls",
           "when": "emulator-extended-controls.hasDevices",
-          "group": "navigation@100"
+          "group": "navigation@109"
         },
         {
           "command": "emulator-extended-controls.toolbarToggleDarkMode",
