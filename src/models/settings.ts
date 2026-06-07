@@ -1,19 +1,14 @@
-/**
- * Typed representation of all configurable extension settings.
- */
+/** Typed extension settings */
 export interface ExtensionSettings {
-  /** Whether to automatically detect and poll for connected devices */
   autoDetectDevices: boolean;
-  /** Show a dedicated Dark Mode toggle button in the debug toolbar */
+  /** Individual toolbar quick-action buttons */
   showDarkModeButton: boolean;
-  /** Show a dedicated Screenshot button in the debug toolbar */
-  showScreenshotButton: boolean;
-  /** Show a dedicated Screen Record button in the debug toolbar */
-  showRecordButton: boolean;
-  /** Show a dedicated Layout Bounds toggle button in the debug toolbar */
+  showNavModeButton: boolean;
+  showTalkBackButton: boolean;
+  showSelectToSpeakButton: boolean;
+  showFontSizeButton: boolean;
+  showDisplaySizeButton: boolean;
   showLayoutBoundsButton: boolean;
-  /** Show a dedicated Device Rotate button in the debug toolbar */
-  showRotateButton: boolean;
-  /** Directory to save screenshots and recordings (empty = workspace root) */
+  showRecordButton: boolean;
   outputDirectory: string;
 }

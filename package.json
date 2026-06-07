@@ -1,40 +1,21 @@
 {
   "name": "emulator-extended-controls",
   "displayName": "Emulator Extended Controls",
-  "description": "Android Studio–style emulator controls inside VS Code's debug toolbar. Manage Dark Mode, Font Size, Display Density, Layout Bounds, Screenshots, Screen Recording, and more without leaving your editor. Supports multiple connected Android devices and emulators with instant device switching.",
+  "description": "Android Studio–style emulator controls inside VS Code's debug toolbar. Manage Dark Mode, Navigation Mode, TalkBack, Font Size, Display Size, Layout Bounds, and Screen Recording without leaving your editor.",
   "version": "1.0.0",
   "publisher": "emulator-extended-controls",
   "icon": "assets/icon.png",
-  "engines": {
-    "vscode": "^1.100.0"
-  },
-  "categories": [
-    "Other",
-    "Debuggers"
-  ],
-  "keywords": [
-    "android",
-    "emulator",
-    "adb",
-    "flutter",
-    "avd",
-    "debug",
-    "toolbar",
-    "device"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-username/emulator-extended-controls"
-  },
-  "activationEvents": [
-    "onStartupFinished"
-  ],
+  "engines": { "vscode": "^1.100.0" },
+  "categories": ["Other", "Debuggers"],
+  "keywords": ["android", "emulator", "adb", "flutter", "avd", "debug", "toolbar"],
+  "repository": { "type": "git", "url": "https://github.com/your-username/emulator-extended-controls" },
+  "activationEvents": ["onStartupFinished"],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "emulator-extended-controls.openControls",
-        "title": "Open Emulator Controls",
+        "title": "Open Device Settings",
         "category": "Emulator",
         "icon": "$(device-mobile)"
       },
@@ -51,34 +32,52 @@
         "icon": "$(refresh)"
       },
       {
-        "command": "emulator-extended-controls.toggleDarkMode",
-        "title": "Toggle Dark Mode",
-        "category": "Emulator",
-        "icon": "$(color-mode)"
-      },
-      {
-        "command": "emulator-extended-controls.takeScreenshot",
-        "title": "Take Screenshot",
-        "category": "Emulator",
-        "icon": "$(device-camera)"
-      },
-      {
         "command": "emulator-extended-controls.startRecording",
         "title": "Record Screen",
         "category": "Emulator",
         "icon": "$(record)"
       },
       {
-        "command": "emulator-extended-controls.toggleLayoutBounds",
+        "command": "emulator-extended-controls.toolbarToggleDarkMode",
+        "title": "Toggle Dark Mode",
+        "category": "Emulator",
+        "icon": "$(color-mode)"
+      },
+      {
+        "command": "emulator-extended-controls.toolbarSetNavMode",
+        "title": "Navigation Mode…",
+        "category": "Emulator",
+        "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "emulator-extended-controls.toolbarToggleTalkBack",
+        "title": "Toggle TalkBack",
+        "category": "Emulator",
+        "icon": "$(megaphone)"
+      },
+      {
+        "command": "emulator-extended-controls.toolbarToggleSelectToSpeak",
+        "title": "Toggle Select to Speak",
+        "category": "Emulator",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "emulator-extended-controls.toolbarSetFontSize",
+        "title": "Font Size…",
+        "category": "Emulator",
+        "icon": "$(whole-word)"
+      },
+      {
+        "command": "emulator-extended-controls.toolbarSetDisplaySize",
+        "title": "Display Size…",
+        "category": "Emulator",
+        "icon": "$(zoom-in)"
+      },
+      {
+        "command": "emulator-extended-controls.toolbarToggleLayoutBounds",
         "title": "Toggle Layout Bounds",
         "category": "Emulator",
         "icon": "$(layout)"
-      },
-      {
-        "command": "emulator-extended-controls.rotateDevice",
-        "title": "Rotate Device",
-        "category": "Emulator",
-        "icon": "$(arrow-swap)"
       }
     ],
     "menus": {
@@ -89,64 +88,58 @@
           "group": "navigation@100"
         },
         {
-          "command": "emulator-extended-controls.toggleDarkMode",
+          "command": "emulator-extended-controls.toolbarToggleDarkMode",
           "when": "emulator-extended-controls.showDarkMode",
           "group": "navigation@101"
         },
         {
-          "command": "emulator-extended-controls.takeScreenshot",
-          "when": "emulator-extended-controls.showScreenshot",
+          "command": "emulator-extended-controls.toolbarSetNavMode",
+          "when": "emulator-extended-controls.showNavMode",
           "group": "navigation@102"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarToggleTalkBack",
+          "when": "emulator-extended-controls.showTalkBack",
+          "group": "navigation@103"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarToggleSelectToSpeak",
+          "when": "emulator-extended-controls.showSelectToSpeak",
+          "group": "navigation@104"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarSetFontSize",
+          "when": "emulator-extended-controls.showFontSize",
+          "group": "navigation@105"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarSetDisplaySize",
+          "when": "emulator-extended-controls.showDisplaySize",
+          "group": "navigation@106"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarToggleLayoutBounds",
+          "when": "emulator-extended-controls.showLayoutBounds",
+          "group": "navigation@107"
         },
         {
           "command": "emulator-extended-controls.startRecording",
           "when": "emulator-extended-controls.showRecord",
-          "group": "navigation@103"
-        },
-        {
-          "command": "emulator-extended-controls.toggleLayoutBounds",
-          "when": "emulator-extended-controls.showLayoutBounds",
-          "group": "navigation@104"
-        },
-        {
-          "command": "emulator-extended-controls.rotateDevice",
-          "when": "emulator-extended-controls.showRotate",
-          "group": "navigation@105"
+          "group": "navigation@108"
         }
       ],
       "commandPalette": [
-        {
-          "command": "emulator-extended-controls.openControls",
-          "when": "true"
-        },
-        {
-          "command": "emulator-extended-controls.selectDevice",
-          "when": "true"
-        },
-        {
-          "command": "emulator-extended-controls.refreshDevices",
-          "when": "true"
-        },
-        {
-          "command": "emulator-extended-controls.toggleDarkMode",
-          "when": "true"
-        },
-        {
-          "command": "emulator-extended-controls.takeScreenshot",
-          "when": "true"
-        },
-        {
-          "command": "emulator-extended-controls.startRecording",
-          "when": "true"
-        },
-        {
-          "command": "emulator-extended-controls.toggleLayoutBounds",
-          "when": "true"
-        },
-        {
-          "command": "emulator-extended-controls.rotateDevice",
-          "when": "true"
-        }
+        { "command": "emulator-extended-controls.openControls", "when": "true" },
+        { "command": "emulator-extended-controls.selectDevice", "when": "true" },
+        { "command": "emulator-extended-controls.refreshDevices", "when": "true" },
+        { "command": "emulator-extended-controls.toolbarToggleDarkMode", "when": "true" },
+        { "command": "emulator-extended-controls.toolbarSetNavMode", "when": "true" },
+        { "command": "emulator-extended-controls.toolbarToggleTalkBack", "when": "true" },
+        { "command": "emulator-extended-controls.toolbarToggleSelectToSpeak", "when": "true" },
+        { "command": "emulator-extended-controls.toolbarSetFontSize", "when": "true" },
+        { "command": "emulator-extended-controls.toolbarSetDisplaySize", "when": "true" },
+        { "command": "emulator-extended-controls.toolbarToggleLayoutBounds", "when": "true" },
+        { "command": "emulator-extended-controls.startRecording", "when": "true" }
       ]
     },
     "configuration": {
@@ -155,37 +148,52 @@
         "emulator-extended-controls.autoDetectDevices": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically detect and monitor connected Android devices. When enabled, the toolbar updates as devices connect or disconnect."
+          "description": "Automatically detect and monitor connected Android devices."
         },
         "emulator-extended-controls.showDarkModeButton": {
           "type": "boolean",
           "default": false,
-          "description": "Show a dedicated Dark Mode toggle button in the debug toolbar (requires a connected device)."
+          "description": "Show a Dark Mode toggle button in the debug toolbar."
         },
-        "emulator-extended-controls.showScreenshotButton": {
+        "emulator-extended-controls.showNavModeButton": {
           "type": "boolean",
           "default": false,
-          "description": "Show a dedicated Screenshot button in the debug toolbar (requires a connected device)."
+          "description": "Show a Navigation Mode picker button in the debug toolbar."
         },
-        "emulator-extended-controls.showRecordButton": {
+        "emulator-extended-controls.showTalkBackButton": {
           "type": "boolean",
           "default": false,
-          "description": "Show a dedicated Screen Recording button in the debug toolbar (requires a connected device)."
+          "description": "Show a TalkBack toggle button in the debug toolbar."
+        },
+        "emulator-extended-controls.showSelectToSpeakButton": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a Select to Speak toggle button in the debug toolbar."
+        },
+        "emulator-extended-controls.showFontSizeButton": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a Font Size picker button in the debug toolbar."
+        },
+        "emulator-extended-controls.showDisplaySizeButton": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a Display Size picker button in the debug toolbar."
         },
         "emulator-extended-controls.showLayoutBoundsButton": {
           "type": "boolean",
           "default": false,
-          "description": "Show a dedicated Layout Bounds toggle button in the debug toolbar (requires a connected device)."
+          "description": "Show a Layout Bounds toggle button in the debug toolbar."
         },
-        "emulator-extended-controls.showRotateButton": {
+        "emulator-extended-controls.showRecordButton": {
           "type": "boolean",
           "default": false,
-          "description": "Show a dedicated Rotate Device button in the debug toolbar (requires a connected device)."
+          "description": "Show a Screen Recording button in the debug toolbar."
         },
         "emulator-extended-controls.outputDirectory": {
           "type": "string",
           "default": "",
-          "description": "Directory to save screenshots and screen recordings. Defaults to an 'emulator-captures' folder in the workspace root when left empty."
+          "description": "Directory to save screen recordings. Defaults to 'emulator-captures/' in the workspace root."
         }
       }
     }

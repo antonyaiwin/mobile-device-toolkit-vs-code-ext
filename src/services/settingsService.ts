@@ -1,45 +1,35 @@
 import * as vscode from 'vscode';
 import { ExtensionSettings } from '../models/settings';
 
-/** Configuration namespace used throughout the extension */
-const CONFIG_NAMESPACE = 'emulator-extended-controls';
+const NS = 'emulator-extended-controls';
 
-/**
- * SettingsService – reads and watches VS Code configuration.
- *
- * Responsible for:
- *  - Providing typed access to all extension settings
- *  - Firing a change event when the user edits settings
- */
+/** Reads extension settings and fires an event on changes. */
 export class SettingsService {
-  /** Emits whenever any extension setting changes */
   private readonly _onDidChangeSettings = new vscode.EventEmitter<ExtensionSettings>();
   readonly onDidChangeSettings = this._onDidChangeSettings.event;
-
   private disposable: vscode.Disposable;
 
   constructor() {
-    // Watch for configuration changes and re-emit typed settings
-    this.disposable = vscode.workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration(CONFIG_NAMESPACE)) {
+    this.disposable = vscode.workspace.onDidChangeConfiguration((e) => {
+      if (e.affectsConfiguration(NS)) {
         this._onDidChangeSettings.fire(this.getSettings());
       }
     });
   }
 
-  /**
-   * Read all extension settings from VS Code configuration.
-   */
   getSettings(): ExtensionSettings {
-    const cfg = vscode.workspace.getConfiguration(CONFIG_NAMESPACE);
+    const c = vscode.workspace.getConfiguration(NS);
     return {
-      autoDetectDevices: cfg.get<boolean>('autoDetectDevices', true),
-      showDarkModeButton: cfg.get<boolean>('showDarkModeButton', false),
-      showScreenshotButton: cfg.get<boolean>('showScreenshotButton', false),
-      showRecordButton: cfg.get<boolean>('showRecordButton', false),
-      showLayoutBoundsButton: cfg.get<boolean>('showLayoutBoundsButton', false),
-      showRotateButton: cfg.get<boolean>('showRotateButton', false),
-      outputDirectory: cfg.get<string>('outputDirectory', ''),
+      autoDetectDevices:      c.get<boolean>('autoDetectDevices', true),
+      showDarkModeButton:     c.get<boolean>('showDarkModeButton', false),
+      showNavModeButton:      c.get<boolean>('showNavModeButton', false),
+      showTalkBackButton:     c.get<boolean>('showTalkBackButton', false),
+      showSelectToSpeakButton: c.get<boolean>('showSelectToSpeakButton', false),
+      showFontSizeButton:     c.get<boolean>('showFontSizeButton', false),
+      showDisplaySizeButton:  c.get<boolean>('showDisplaySizeButton', false),
+      showLayoutBoundsButton: c.get<boolean>('showLayoutBoundsButton', false),
+      showRecordButton:       c.get<boolean>('showRecordButton', false),
+      outputDirectory:        c.get<string>('outputDirectory', ''),
     };
   }
 

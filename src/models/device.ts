@@ -1,62 +1,59 @@
 /**
- * Device model and related types for Android device management.
+ * Device model and related types.
  */
 
-/** The connection state of an Android device reported by ADB */
 export type DeviceStatus = 'device' | 'offline' | 'unauthorized' | 'no permissions';
-
-/** The type of Android device */
 export type DeviceType = 'emulator' | 'physical';
 
-/**
- * Represents a connected Android device or emulator detected by ADB.
- */
 export interface AndroidDevice {
-  /** ADB serial identifier (e.g. "emulator-5554" or "R58M...") */
   serial: string;
-  /** Human-readable display name (e.g. "Pixel 8 Pro (emulator-5554)") */
   displayName: string;
-  /** Whether this is an emulator or physical device */
   type: DeviceType;
-  /** ADB connection status */
   status: DeviceStatus;
-  /** Optional model name resolved from ADB props */
   model?: string;
 }
 
-/**
- * Font scale presets for accessibility control.
- */
-export interface FontSizePreset {
-  label: string;
-  description: string;
-  scale: number;
+/** Represents the live settings state read from the device via ADB. */
+export interface DeviceSettingsState {
+  darkTheme: boolean;
+  /** '0' = 3-Button, '1' = 2-Button, '2' = Gesture */
+  navigationMode: string;
+  talkBack: boolean;
+  selectToSpeak: boolean;
+  /** font_scale value as string: '0.85' | '1.0' | '1.15' | '1.3' */
+  fontSize: string;
+  /** density dpi as string, or 'default' */
+  displaySize: string;
+  layoutBounds: boolean;
+  isRecording: boolean;
 }
 
-/** Built-in font size presets */
-export const FONT_SIZE_PRESETS: FontSizePreset[] = [
-  { label: '$(text-size) Small', description: 'Font scale: 0.85', scale: 0.85 },
-  { label: '$(text-size) Default', description: 'Font scale: 1.0 (default)', scale: 1.0 },
-  { label: '$(text-size) Large', description: 'Font scale: 1.15', scale: 1.15 },
-  { label: '$(text-size) Largest', description: 'Font scale: 1.30', scale: 1.30 },
+// ── Accessibility service identifiers ───────────────────────────────────────
+export const TALKBACK_SERVICE =
+  'com.google.android.marvin.talkback/com.google.android.marvin.talkback.TalkBackService';
+export const SELECT_TO_SPEAK_SERVICE =
+  'com.google.android.accessibility.selecttospeak/.SelectToSpeakService';
+
+// ── Navigation mode labels ───────────────────────────────────────────────────
+export const NAVIGATION_MODE_LABELS: Record<string, string> = {
+  '0': '3-Button Navigation',
+  '1': '2-Button Navigation',
+  '2': 'Gesture Navigation',
+};
+
+// ── Font scale options ───────────────────────────────────────────────────────
+export const FONT_SCALE_OPTIONS = [
+  { label: 'Small', value: '0.85' },
+  { label: 'Default', value: '1.0' },
+  { label: 'Large', value: '1.15' },
+  { label: 'Largest', value: '1.3' },
 ];
 
-/**
- * Display density presets.
- */
-export interface DisplayDensityPreset {
-  label: string;
-  description: string;
-  /** DPI value, or null to trigger a reset */
-  dpi: number | null;
-}
-
-/** Built-in display density presets */
-export const DISPLAY_DENSITY_PRESETS: DisplayDensityPreset[] = [
-  { label: '$(screen-full) Low (280 dpi)', description: '280 dpi', dpi: 280 },
-  { label: '$(screen-full) Medium (360 dpi)', description: '360 dpi', dpi: 360 },
-  { label: '$(screen-full) High (420 dpi)', description: '420 dpi (default)', dpi: 420 },
-  { label: '$(screen-full) XHigh (480 dpi)', description: '480 dpi', dpi: 480 },
-  { label: '$(screen-full) XXHigh (560 dpi)', description: '560 dpi', dpi: 560 },
-  { label: '$(discard) Reset to Default', description: 'Restore device default density', dpi: null },
+// ── Display density options ──────────────────────────────────────────────────
+export const DISPLAY_DENSITY_OPTIONS = [
+  { label: 'Smaller (280)', value: '280' },
+  { label: 'Small (360)', value: '360' },
+  { label: 'Default', value: 'default' },
+  { label: 'Large (480)', value: '480' },
+  { label: 'Larger (560)', value: '560' },
 ];

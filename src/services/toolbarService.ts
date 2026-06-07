@@ -3,21 +3,10 @@ import { DeviceService } from './deviceService';
 import { SettingsService } from './settingsService';
 
 /**
- * ToolbarService – manages the dynamic visibility of toolbar commands.
+ * ToolbarService – manages VS Code context keys that control toolbar button visibility.
  *
- * VS Code doesn't support runtime-toggling of `debug/toolBar` contributions,
- * so we use `when` clause contexts (vscode.commands.executeCommand('setContext'))
- * to show/hide each toolbar button based on:
- *  - Whether at least one Android device is connected
- *  - The user's optional button settings
- *
- * Context keys set by this service:
- *  - emulator-extended-controls.hasDevices       → main button visibility
- *  - emulator-extended-controls.showDarkMode     → optional button
- *  - emulator-extended-controls.showScreenshot   → optional button
- *  - emulator-extended-controls.showRecord       → optional button
- *  - emulator-extended-controls.showLayoutBounds → optional button
- *  - emulator-extended-controls.showRotate       → optional button
+ * Pattern: context key = true  →  button appears in debug/toolBar
+ *          context key = false →  button hidden
  */
 export class ToolbarService {
   constructor(
@@ -25,73 +14,32 @@ export class ToolbarService {
     private readonly settingsService: SettingsService
   ) {}
 
-  /**
-   * Initialise context keys and wire up listeners for device/settings changes.
-   * Should be called once during extension activation.
-   */
   initialize(): void {
-    // Set initial state
     this.updateContextKeys();
-
-    // Re-evaluate when device list changes
     this.deviceService.onDevicesChanged(() => this.updateContextKeys());
-
-    // Re-evaluate when settings change
     this.settingsService.onDidChangeSettings(() => this.updateContextKeys());
   }
 
-  /**
-   * Force-refresh all context keys immediately.
-   * Useful after an explicit device refresh triggered by the user.
-   */
-  refresh(): void {
-    this.updateContextKeys();
-  }
-
-  // ---------------------------------------------------------------------------
-  // Private helpers
-  // ---------------------------------------------------------------------------
+  refresh(): void { this.updateContextKeys(); }
 
   private updateContextKeys(): void {
-    const hasDevices = this.deviceService.hasDevices;
-    const settings = this.settingsService.getSettings();
+    const has = this.deviceService.hasDevices;
+    const s   = this.settingsService.getSettings();
 
-    // Primary toolbar icon – visible whenever at least one device is online
-    void vscode.commands.executeCommand(
-      'setContext',
-      'emulator-extended-controls.hasDevices',
-      hasDevices
-    );
+    const set = (key: string, val: boolean) =>
+      void vscode.commands.executeCommand('setContext', `emulator-extended-controls.${key}`, val);
 
-    // Optional quick-action buttons – visible only when device present AND user enabled them
-    void vscode.commands.executeCommand(
-      'setContext',
-      'emulator-extended-controls.showDarkMode',
-      hasDevices && settings.showDarkModeButton
-    );
+    // Primary icon – always visible when a device is connected
+    set('hasDevices',       has);
 
-    void vscode.commands.executeCommand(
-      'setContext',
-      'emulator-extended-controls.showScreenshot',
-      hasDevices && settings.showScreenshotButton
-    );
-
-    void vscode.commands.executeCommand(
-      'setContext',
-      'emulator-extended-controls.showRecord',
-      hasDevices && settings.showRecordButton
-    );
-
-    void vscode.commands.executeCommand(
-      'setContext',
-      'emulator-extended-controls.showLayoutBounds',
-      hasDevices && settings.showLayoutBoundsButton
-    );
-
-    void vscode.commands.executeCommand(
-      'setContext',
-      'emulator-extended-controls.showRotate',
-      hasDevices && settings.showRotateButton
-    );
+    // Optional quick-action buttons – visible only when: device connected AND user enabled them
+    set('showDarkMode',      has && s.showDarkModeButton);
+    set('showNavMode',       has && s.showNavModeButton);
+    set('showTalkBack',      has && s.showTalkBackButton);
+    set('showSelectToSpeak', has && s.showSelectToSpeakButton);
+    set('showFontSize',      has && s.showFontSizeButton);
+    set('showDisplaySize',   has && s.showDisplaySizeButton);
+    set('showLayoutBounds',  has && s.showLayoutBoundsButton);
+    set('showRecord',        has && s.showRecordButton);
   }
 }
