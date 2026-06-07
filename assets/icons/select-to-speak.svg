@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <!-- Cursor arrow -->
+  <path d="M2 2 L2 10 L5 8 L6.5 12 L8 11.5 L6.5 7.5 L10 7.5 Z" fill="currentColor"/>
+  <!-- Speech bubble -->
+  <path d="M10 1.5 h3.5 a1 1 0 0 1 1 1 v3 a1 1 0 0 1-1 1 H11 L9.5 8 V6.5 H10 a1 1 0 0 1-1-1 v-3 a1 1 0 0 1 1-1z"
+    fill="currentColor"/>
+</svg>

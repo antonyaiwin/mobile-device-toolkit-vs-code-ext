@@ -26,7 +26,8 @@
     "url": "https://github.com/your-username/emulator-extended-controls"
   },
   "activationEvents": [
-    "onStartupFinished"
+    "onStartupFinished",
+    "onView:emulatorDeviceControls"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -54,13 +55,19 @@
         "command": "emulator-extended-controls.openControls",
         "title": "Open Device Settings",
         "category": "Emulator",
-        "icon": "$(device-mobile)"
+        "icon": {
+          "light": "./assets/icons/open-controls.svg",
+          "dark": "./assets/icons/open-controls.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.selectDevice",
         "title": "Select Android Device",
         "category": "Emulator",
-        "icon": "$(device-mobile)"
+        "icon": {
+          "light": "./assets/icons/open-controls.svg",
+          "dark": "./assets/icons/open-controls.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.refreshDevices",
@@ -72,49 +79,73 @@
         "command": "emulator-extended-controls.startRecording",
         "title": "Record Screen",
         "category": "Emulator",
-        "icon": "$(record)"
+        "icon": {
+          "light": "./assets/icons/record.svg",
+          "dark": "./assets/icons/record.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.toolbarToggleDarkMode",
         "title": "Toggle Dark Mode",
         "category": "Emulator",
-        "icon": "$(color-mode)"
+        "icon": {
+          "light": "./assets/icons/dark-mode.svg",
+          "dark": "./assets/icons/dark-mode.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.toolbarSetNavMode",
         "title": "Navigation Mode…",
         "category": "Emulator",
-        "icon": "$(arrow-swap)"
+        "icon": {
+          "light": "./assets/icons/nav-mode.svg",
+          "dark": "./assets/icons/nav-mode.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.toolbarToggleTalkBack",
         "title": "Toggle TalkBack",
         "category": "Emulator",
-        "icon": "$(megaphone)"
+        "icon": {
+          "light": "./assets/icons/talkback.svg",
+          "dark": "./assets/icons/talkback.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.toolbarToggleSelectToSpeak",
         "title": "Toggle Select to Speak",
         "category": "Emulator",
-        "icon": "$(comment)"
+        "icon": {
+          "light": "./assets/icons/select-to-speak.svg",
+          "dark": "./assets/icons/select-to-speak.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.toolbarSetFontSize",
         "title": "Font Size…",
         "category": "Emulator",
-        "icon": "$(whole-word)"
+        "icon": {
+          "light": "./assets/icons/font-size.svg",
+          "dark": "./assets/icons/font-size.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.toolbarSetDisplaySize",
         "title": "Display Size…",
         "category": "Emulator",
-        "icon": "$(zoom-in)"
+        "icon": {
+          "light": "./assets/icons/display-size.svg",
+          "dark": "./assets/icons/display-size.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.toolbarToggleLayoutBounds",
         "title": "Toggle Layout Bounds",
         "category": "Emulator",
-        "icon": "$(layout)"
+        "icon": {
+          "light": "./assets/icons/layout-bounds.svg",
+          "dark": "./assets/icons/layout-bounds.svg"
+        }
       },
       {
         "command": "emulator-extended-controls.avd.refresh",

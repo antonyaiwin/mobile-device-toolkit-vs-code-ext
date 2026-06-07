@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <!-- Ear shape -->
+  <path d="M8 1a5 5 0 0 1 5 5c0 2-1 3.5-2.5 4.5V13a1 1 0 0 1-2 0v-2.7A3 3 0 0 1 5 8a3 3 0 0 1 3-3 2 2 0 0 1 0 4 1 1 0 0 1 0-2"
+    fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Sound waves -->
+  <path d="M13.5 4.5 A6 6 0 0 1 14 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/>
+</svg>

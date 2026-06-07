@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <!-- Phone screen outline -->
+  <rect x="2" y="2" width="12" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  <!-- Resize arrows (top-left to bottom-right diagonal) -->
+  <polyline points="4,8 4,4 8,4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="12,8 12,12 8,12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="4" y1="4" x2="12" y2="12" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+</svg>
