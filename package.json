@@ -5,13 +5,51 @@
   "version": "1.0.0",
   "publisher": "emulator-extended-controls",
   "icon": "assets/icon.png",
-  "engines": { "vscode": "^1.100.0" },
-  "categories": ["Other", "Debuggers"],
-  "keywords": ["android", "emulator", "adb", "flutter", "avd", "debug", "toolbar"],
-  "repository": { "type": "git", "url": "https://github.com/your-username/emulator-extended-controls" },
-  "activationEvents": ["onStartupFinished"],
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other",
+    "Debuggers"
+  ],
+  "keywords": [
+    "android",
+    "emulator",
+    "adb",
+    "flutter",
+    "avd",
+    "debug",
+    "toolbar"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/emulator-extended-controls"
+  },
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:emulatorDeviceControls"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "emulatorDeviceControlsContainer",
+          "title": "Android Device Controls",
+          "icon": "assets/avd-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "emulatorDeviceControlsContainer": [
+        {
+          "id": "emulatorDeviceControls",
+          "name": "Device Controls",
+          "icon": "assets/avd-icon.svg",
+          "type": "webview"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "emulator-extended-controls.openControls",
@@ -78,6 +116,12 @@
         "title": "Toggle Layout Bounds",
         "category": "Emulator",
         "icon": "$(layout)"
+      },
+      {
+        "command": "emulator-extended-controls.avd.refresh",
+        "title": "Refresh Device Controls",
+        "category": "Emulator",
+        "icon": "$(refresh)"
       }
     ],
     "menus": {
@@ -128,18 +172,67 @@
           "group": "navigation@108"
         }
       ],
+      "view/title": [
+        {
+          "command": "emulator-extended-controls.avd.refresh",
+          "when": "view == emulatorDeviceControls",
+          "group": "navigation@0"
+        },
+        {
+          "command": "emulator-extended-controls.openControls",
+          "when": "view == emulatorDeviceControls",
+          "group": "navigation@1"
+        }
+      ],
       "commandPalette": [
-        { "command": "emulator-extended-controls.openControls", "when": "true" },
-        { "command": "emulator-extended-controls.selectDevice", "when": "true" },
-        { "command": "emulator-extended-controls.refreshDevices", "when": "true" },
-        { "command": "emulator-extended-controls.toolbarToggleDarkMode", "when": "true" },
-        { "command": "emulator-extended-controls.toolbarSetNavMode", "when": "true" },
-        { "command": "emulator-extended-controls.toolbarToggleTalkBack", "when": "true" },
-        { "command": "emulator-extended-controls.toolbarToggleSelectToSpeak", "when": "true" },
-        { "command": "emulator-extended-controls.toolbarSetFontSize", "when": "true" },
-        { "command": "emulator-extended-controls.toolbarSetDisplaySize", "when": "true" },
-        { "command": "emulator-extended-controls.toolbarToggleLayoutBounds", "when": "true" },
-        { "command": "emulator-extended-controls.startRecording", "when": "true" }
+        {
+          "command": "emulator-extended-controls.openControls",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.selectDevice",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.refreshDevices",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarToggleDarkMode",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarSetNavMode",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarToggleTalkBack",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarToggleSelectToSpeak",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarSetFontSize",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarSetDisplaySize",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.toolbarToggleLayoutBounds",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.startRecording",
+          "when": "true"
+        },
+        {
+          "command": "emulator-extended-controls.avd.refresh",
+          "when": "true"
+        }
       ]
     },
     "configuration": {
