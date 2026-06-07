@@ -56,8 +56,8 @@
         "title": "Open Device Settings",
         "category": "Emulator",
         "icon": {
-          "light": "./assets/icons/open-controls.svg",
-          "dark": "./assets/icons/open-controls.svg"
+          "light": "./assets/icons/mobile_menu_light.svg",
+          "dark": "./assets/icons/mobile_menu_dark.svg"
         }
       },
       {
@@ -65,8 +65,8 @@
         "title": "Select Android Device",
         "category": "Emulator",
         "icon": {
-          "light": "./assets/icons/open-controls.svg",
-          "dark": "./assets/icons/open-controls.svg"
+          "light": "./assets/icons/mobile_menu_light.svg",
+          "dark": "./assets/icons/mobile_menu_dark.svg"
         }
       },
       {
@@ -79,18 +79,15 @@
         "command": "emulator-extended-controls.startRecording",
         "title": "Record Screen",
         "category": "Emulator",
-        "icon": {
-          "light": "./assets/icons/record.svg",
-          "dark": "./assets/icons/record.svg"
-        }
+        "icon": "$(record)"
       },
       {
         "command": "emulator-extended-controls.toolbarToggleDarkMode",
         "title": "Toggle Dark Mode",
         "category": "Emulator",
         "icon": {
-          "light": "./assets/icons/dark-mode.svg",
-          "dark": "./assets/icons/dark-mode.svg"
+          "light": "./assets/icons/dark_mode_light.svg",
+          "dark": "./assets/icons/dark_mode_dark.svg"
         }
       },
       {
@@ -98,8 +95,8 @@
         "title": "Navigation Mode…",
         "category": "Emulator",
         "icon": {
-          "light": "./assets/icons/nav-mode.svg",
-          "dark": "./assets/icons/nav-mode.svg"
+          "light": "./assets/icons/steppers_light.svg",
+          "dark": "./assets/icons/steppers_dark.svg"
         }
       },
       {
@@ -107,8 +104,8 @@
         "title": "Toggle TalkBack",
         "category": "Emulator",
         "icon": {
-          "light": "./assets/icons/talkback.svg",
-          "dark": "./assets/icons/talkback.svg"
+          "light": "./assets/icons/text_to_speech_light.svg",
+          "dark": "./assets/icons/text_to_speech_dark.svg"
         }
       },
       {
@@ -116,8 +113,8 @@
         "title": "Toggle Select to Speak",
         "category": "Emulator",
         "icon": {
-          "light": "./assets/icons/select-to-speak.svg",
-          "dark": "./assets/icons/select-to-speak.svg"
+          "light": "./assets/icons/select_to_speak_light.svg",
+          "dark": "./assets/icons/select_to_speak_dark.svg"
         }
       },
       {
@@ -125,8 +122,8 @@
         "title": "Font Size…",
         "category": "Emulator",
         "icon": {
-          "light": "./assets/icons/font-size.svg",
-          "dark": "./assets/icons/font-size.svg"
+          "light": "./assets/icons/format_size_light.svg",
+          "dark": "./assets/icons/format_size_dark.svg"
         }
       },
       {
@@ -134,8 +131,8 @@
         "title": "Display Size…",
         "category": "Emulator",
         "icon": {
-          "light": "./assets/icons/display-size.svg",
-          "dark": "./assets/icons/display-size.svg"
+          "light": "./assets/icons/settings_overscan_light.svg",
+          "dark": "./assets/icons/settings_overscan_dark.svg"
         }
       },
       {
@@ -143,8 +140,8 @@
         "title": "Toggle Layout Bounds",
         "category": "Emulator",
         "icon": {
-          "light": "./assets/icons/layout-bounds.svg",
-          "dark": "./assets/icons/layout-bounds.svg"
+          "light": "./assets/icons/border_horizontal_light.svg",
+          "dark": "./assets/icons/border_horizontal_dark.svg"
         }
       },
       {

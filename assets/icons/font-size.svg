@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <!-- Large A -->
-  <path d="M2 14 L6 2 L8 2 L12 14 H10 L8.8 10.5 H5.2 L4 14 Z M5.8 9 H9.2 L7.5 4.5 Z" fill="currentColor"/>
-  <!-- Small a subscript -->
-  <text x="11.5" y="14" font-size="5.5" font-family="sans-serif" fill="currentColor">a</text>
-</svg>
