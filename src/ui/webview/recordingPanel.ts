@@ -14,6 +14,10 @@ import { AdbService } from '../../services/adbService';
 export class RecordingPanel {
   private static _instance: RecordingPanel | undefined;
 
+  /** Fires the moment a stop+save is initiated from any source. */
+  private static readonly _onStopRequested = new vscode.EventEmitter<void>();
+  static readonly onStopRequested: vscode.Event<void> = RecordingPanel._onStopRequested.event;
+
   static get isOpen(): boolean { return !!RecordingPanel._instance; }
 
   // ── Static API ──────────────────────────────────────────────────────────────
@@ -47,6 +51,12 @@ export class RecordingPanel {
   }
 
 
+  /** Notify the open RecordingPanel immediately that saving is in progress. */
+  static notifyStopping(): void {
+    try { RecordingPanel._instance?._panel.webview.postMessage({ type: 'saving' }); }
+    catch { /* panel may be disposed */ }
+  }
+
   /** Reveal an existing RecordingPanel (no-op if none exists). */
   static reveal(): void {
     RecordingPanel._instance?._panel.reveal(vscode.ViewColumn.Beside, true);
@@ -75,47 +85,78 @@ export class RecordingPanel {
 
     this._panel.webview.html = this._buildHtml();
 
-    // Handle messages from the webview
+    // Handle messages from the webview (stop button)
     this._panel.webview.onDidReceiveMessage(async (msg: { type: string }) => {
       if (msg.type === 'stop') {
         await this._stopAndSave();
-        this._panel.dispose(); // triggers onDidDispose → _stopAndSave skipped (guard)
+        this._panel.dispose();
       }
     }, null, this._disposables);
 
-    // Auto-stop and save when the user closes the panel tab
+    // When recording is stopped externally (e.g. from the activity bar sidebar),
+    // show "Saving…" in the panel then auto-close after a short delay.
+    adb.onRecordingChanged((isRecording) => {
+      if (!isRecording && !this._stopped) {
+        this._stopped = true; // prevent _stopAndSave double-fire
+        try { this._panel.webview.postMessage({ type: 'saving' }); } catch { /* */ }
+        setTimeout(() => { try { this._panel.dispose(); } catch { /* */ } }, 2500);
+      }
+    }, null, this._disposables);
+
+    // Closing the tab stops and saves the recording.
+    // The _stopped guard prevents double-stop if the sidebar already stopped it.
     this._panel.onDidDispose(async () => {
       await this._stopAndSave();
       this._cleanup();
     }, null, this._disposables);
   }
 
-  // ── Stop & save ─────────────────────────────────────────────────────────────
+  // ── Stop & save (centralized) ────────────────────────────────────────────────
 
-  private async _stopAndSave(): Promise<void> {
-    if (this._stopped) { return; }
-    this._stopped = true;
+  /**
+   * The single source of truth for stopping a recording and saving it.
+   * Called from both the RecordingPanel stop button and the activity bar sidebar.
+   */
+  static async stopCurrent(
+    context: vscode.ExtensionContext,
+    adb: AdbService,
+    serial: string
+  ): Promise<void> {
+    if (!adb.isRecording) { return; } // already stopped externally (e.g. 3-min limit)
 
-    // Notify webview that we're saving (in case it's still visible)
-    try { this._panel.webview.postMessage({ type: 'saving' }); } catch { /* panel may be disposed */ }
+    // Fire immediately so ALL subscribers (sidebar, etc.) can show "stopping" state
+    RecordingPanel._onStopRequested.fire();
 
-    const remotePath = this.adb.currentRemotePath ?? '/sdcard/emulator_recording.mp4';
-    const outputDir  = this._resolveOutputDir();
+    // Immediately update the panel UI (if open)
+    RecordingPanel.notifyStopping();
+
+    const remotePath = adb.currentRemotePath ?? '/sdcard/emulator_recording.mp4';
+    const outputDir  = RecordingPanel._resolveOutputDir(context);
     const ts         = new Date().toISOString().replace(/[:.]/g, '-');
     const filename   = `recording_${ts}.mp4`;
     const localPath  = path.join(outputDir, filename);
 
-    if (!this.adb.isRecording) {
-      // Recording already stopped externally (e.g. 3-min limit)
-      return;
-    }
-
     try {
-      await this.adb.stopScreenRecord(this.serial, remotePath, localPath);
-      vscode.window.showInformationMessage(`Screen recording saved: ${filename}`);
+      await adb.stopScreenRecord(serial, remotePath, localPath);
+      vscode.window.showInformationMessage(`Recording saved: ${filename}`, 'Open').then(async (btn) => {
+        if (btn === 'Open') {
+          await vscode.commands.executeCommand('vscode.open', vscode.Uri.file(localPath));
+        }
+      });
+      const cfg = vscode.workspace.getConfiguration('emulator-extended-controls');
+      if (cfg.get<boolean>('openRecordingAfterSave', false)) {
+        await vscode.commands.executeCommand('vscode.open', vscode.Uri.file(localPath));
+      }
     } catch (err) {
       vscode.window.showErrorMessage(`Failed to save recording: ${(err as Error).message}`);
     }
+  }
+
+  /** Instance wrapper — guards against double-stop, then delegates to the static method. */
+  private async _stopAndSave(): Promise<void> {
+    if (this._stopped) { return; }
+    this._stopped = true;
+    await RecordingPanel.stopCurrent(this.context, this.adb, this.serial);
   }
 
   // ── HTML ────────────────────────────────────────────────────────────────────
@@ -255,14 +296,14 @@ export class RecordingPanel {
 
   // ── Utilities ───────────────────────────────────────────────────────────────
 
-  private _resolveOutputDir(): string {
+  private static _resolveOutputDir(context: vscode.ExtensionContext): string {
     const cfg = vscode.workspace.getConfiguration('emulator-extended-controls');
     const userDir = cfg.get<string>('outputDirectory', '');
     if (userDir) { fs.mkdirSync(userDir, { recursive: true }); return userDir; }
     const folders = vscode.workspace.workspaceFolders;
     const dir = folders
       ? path.join(folders[0].uri.fsPath, 'emulator-captures')
-      : path.join(this.context.globalStorageUri.fsPath, 'captures');
+      : path.join(context.globalStorageUri.fsPath, 'captures');
     fs.mkdirSync(dir, { recursive: true });
     return dir;
   }

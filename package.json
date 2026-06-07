@@ -26,8 +26,7 @@
     "url": "https://github.com/your-username/emulator-extended-controls"
   },
   "activationEvents": [
-    "onStartupFinished",
-    "onView:emulatorDeviceControls"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -282,6 +281,11 @@
           "type": "boolean",
           "default": false,
           "description": "Show a Screen Recording button in the debug toolbar."
+        },
+        "emulator-extended-controls.openRecordingAfterSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically open the saved screen recording in the VS Code media viewer after stopping."
         },
         "emulator-extended-controls.outputDirectory": {
           "type": "string",

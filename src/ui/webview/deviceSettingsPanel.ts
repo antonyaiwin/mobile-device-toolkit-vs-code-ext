@@ -422,7 +422,7 @@ export class DeviceSettingsPanel {
   <div class="section-divider">
     <button class="record-btn" id="recordBtn" title="Start/stop screen recording">
       <span class="dot"></span>
-      <span id="recordLabel">Start Recording</span>
+      <span id="recordLabel">Record Screen</span>
     </button>
   </div>
 
@@ -510,7 +510,7 @@ export class DeviceSettingsPanel {
     recordBtn.classList.toggle('recording', recording && !stopping);
     recordBtn.classList.toggle('stopping', stopping);
     recordBtn.disabled = stopping;
-    recordLabel.textContent = stopping ? 'Stopping…' : recording ? 'Stop Recording' : 'Start Recording';
+    recordLabel.textContent = stopping ? 'Stopping…' : recording ? 'Stop Recording' : 'Record Screen';
   }
 
   function setControlsDisabled(disabled) {

@@ -42,6 +42,11 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
     adb.onRecordingChanged((isRecording) => {
       this._post({ type: 'recordingState', isRecording });
     }, null, disposables);
+    // Immediately show "Stopping & Saving…" in the sidebar when a stop is initiated
+    // from any source (RecordingPanel button, tab close, or sidebar itself).
+    RecordingPanel.onStopRequested(() => {
+      this._post({ type: 'recordingState', isRecording: true, stopping: true });
+    }, null, disposables);
   }
 
   resolveWebviewView(view: vscode.WebviewView): void {
@@ -100,9 +105,11 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
         case 'setLayoutBounds': await this.adb.setLayoutBounds(serial, msg.value); break;
         case 'toggleRecording':
           if (!this.adb.isRecording) {
+            // Start: launch recording + open dedicated panel
             await RecordingPanel.startRecording(this.context, this.adb, serial, device.displayName);
           } else {
-            RecordingPanel.reveal();
+            // Stop: delegate to the centralized stop logic in RecordingPanel
+            await RecordingPanel.stopCurrent(this.context, this.adb, serial);
           }
           await this._refresh();
           return;
@@ -116,6 +123,7 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
   private _post(msg: Record<string, unknown>): void {
     try { this._view?.webview.postMessage(msg); } catch { /* view may be hidden */ }
   }
+
 
   // ── HTML ──────────────────────────────────────────────────────────────────
 
@@ -255,29 +263,39 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
     margin: 6px 0;
   }
 
-  /* Record button */
-  .record-btn {
+  /* ── Record buttons ── */
+  .rec-area {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    width: calc(100% - 24px);
+    margin: 6px 12px 0;
+  }
+  .rec-area.visible { display: flex; }
+
+  .btn-rec, .btn-stop {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    width: calc(100% - 24px);
-    margin: 6px 12px 0;
+    width: 100%;
     padding: 6px 12px;
     border: none;
     border-radius: 3px;
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
-    background: #b91c1c;
-    color: #fff;
-    transition: background .15s;
+    transition: background .15s, opacity .15s;
   }
-  .record-btn:hover:not(:disabled) { background: #dc2626; }
-  .record-btn.active { animation: pulse 1.3s ease-in-out infinite; }
-  .record-btn:disabled { opacity: 0.5; cursor: wait; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
-  .dot { width:7px; height:7px; background:currentColor; border-radius:50%; flex-shrink:0; }
+  .btn-rec  { background: #b91c1c; color: #fff; }
+  .btn-rec:hover:not(:disabled)  { background: #dc2626; }
+  .btn-stop { background: #374151; color: #f9fafb; border: 1px solid #6b7280; }
+  .btn-stop:hover:not(:disabled) { background: #4b5563; }
+  .btn-stop:disabled { opacity: 0.5; cursor: wait; }
+  .rec-dot  { width:8px; height:8px; background:#ef4444; border-radius:50%; flex-shrink:0;
+              animation: blink 1.2s ease-in-out infinite; }
+  .stop-sq  { width:8px; height:8px; background:currentColor; border-radius:1px; flex-shrink:0; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 </style>
 </head>
 <body>
@@ -334,10 +352,18 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
   </div>
 
   <div class="divider"></div>
-  <button class="record-btn" id="recordBtn">
-    <span class="dot"></span>
-    <span id="recordLabel">Start Recording</span>
-  </button>
+  <div class="rec-area" id="recArea">
+    <!-- Shown when NOT recording -->
+    <button class="btn-rec" id="startRecBtn">
+      <span class="stop-sq" style="background:#ef4444;border-radius:50%"></span>
+      Record Screen
+    </button>
+    <!-- Shown when recording is active -->
+    <button class="btn-stop" id="stopRecBtn" style="display:none">
+      <span class="rec-dot"></span>
+      <span id="stopLabel">Stop &amp; Save</span>
+    </button>
+  </div>
 </div>
 
 <script>
@@ -353,8 +379,9 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
   $('fontSize').addEventListener('change', e => vscode.postMessage({ type: 'setFontSize', value: e.target.value }));
   $('displaySize').addEventListener('change', e => vscode.postMessage({ type: 'setDisplaySize', value: e.target.value }));
   $('layoutBounds').addEventListener('change', e => vscode.postMessage({ type: 'setLayoutBounds', value: e.target.checked }));
-  $('recordBtn').addEventListener('click', () => {
-    if (!$('recordBtn').disabled) vscode.postMessage({ type: 'toggleRecording' });
+  $('startRecBtn').addEventListener('click', () => vscode.postMessage({ type: 'toggleRecording' }));
+  $('stopRecBtn').addEventListener('click', () => {
+    if (!$('stopRecBtn').disabled) vscode.postMessage({ type: 'toggleRecording' });
   });
 
   // ── Handle messages ───────────────────────────────────────────────────────
@@ -367,6 +394,7 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
       $('noDeviceMsg').classList.remove('visible');
       $('errorMsg').classList.remove('visible');
       $('settings').classList.add('visible');
+      $('recArea').classList.add('visible');
 
       $('darkTheme').checked = s.darkTheme;
       $('navigationMode').value = s.navigationMode;
@@ -382,12 +410,13 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
     if (msg.type === 'noDevice') {
       $('deviceBar').style.display = 'none';
       $('settings').classList.remove('visible');
+      $('recArea').classList.remove('visible');
       $('loadingMsg').classList.remove('visible');
       $('noDeviceMsg').classList.add('visible');
       return;
     }
     if (msg.type === 'recordingState') {
-      setRecording(msg.isRecording, false);
+      setRecording(msg.isRecording, msg.stopping || false);
     }
     if (msg.type === 'error') {
       $('errorMsg').textContent = 'Error: ' + msg.message;
@@ -396,10 +425,10 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
   });
 
   function setRecording(active, stopping) {
-    const btn = $('recordBtn');
-    btn.classList.toggle('active', active && !stopping);
-    btn.disabled = stopping;
-    $('recordLabel').textContent = stopping ? 'Stopping…' : active ? 'Stop Recording' : 'Start Recording';
+    $('startRecBtn').style.display = active ? 'none' : 'flex';
+    $('stopRecBtn').style.display  = active ? 'flex'  : 'none';
+    $('stopRecBtn').disabled = stopping;
+    $('stopLabel').textContent = stopping ? 'Stopping & Saving…' : 'Stop & Save';
   }
 
   function setDisabled(v) {

@@ -127,7 +127,7 @@ export class DeviceControlsProvider implements vscode.TreeDataProvider<vscode.Tr
   }
 
   private _recordItem(recording: boolean): vscode.TreeItem {
-    const item = new vscode.TreeItem(recording ? 'Stop Recording' : 'Start Recording');
+    const item = new vscode.TreeItem(recording ? 'Stop Recording' : 'Record Screen');
     item.iconPath = new vscode.ThemeIcon('record',
       recording ? new vscode.ThemeColor('notificationsErrorIcon.foreground') : undefined);
     item.description = recording ? '● in progress' : '';
