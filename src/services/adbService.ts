@@ -2,7 +2,7 @@ import { exec, spawn } from 'child_process';
 import { promisify } from 'util';
 import * as vscode from 'vscode';
 import type { ChildProcess } from 'child_process';
-import { TALKBACK_SERVICE, SELECT_TO_SPEAK_SERVICE } from '../models/device';
+import { TALKBACK_SERVICE, SELECT_TO_SPEAK_SERVICE, SELECT_TO_SPEAK_SERVICE_AOSP } from '../models/device';
 
 const execAsync = promisify(exec);
 
@@ -125,35 +125,74 @@ export class AdbService {
 
   // ── Accessibility Services ──────────────────────────────────────────────────
 
+  /**
+   * Checks whether the given full component ID (e.g. "pkg/class") is in the
+   * colon-separated enabled_accessibility_services list. Supports one AOSP
+   * fallback for Select to Speak on devices that don't use the marvin package.
+   */
   async getAccessibilityServiceEnabled(serial: string, serviceId: string): Promise<boolean> {
     try {
-      const list = await this.runShellCommand(serial, 'settings get secure enabled_accessibility_services');
-      const pkg = serviceId.split('/')[0];
-      return list.includes(pkg);
+      const raw = await this.runShellCommand(serial, 'settings get secure enabled_accessibility_services');
+      if (!raw || raw.trim() === 'null') { return false; }
+      const services = raw.trim().split(':').filter(Boolean);
+      if (services.includes(serviceId)) { return true; }
+      // Also accept the AOSP fallback component for Select to Speak
+      if (serviceId === SELECT_TO_SPEAK_SERVICE && services.includes(SELECT_TO_SPEAK_SERVICE_AOSP)) {
+        return true;
+      }
+      return false;
     } catch { return false; }
   }
 
   async setAccessibilityService(serial: string, serviceId: string, enable: boolean): Promise<void> {
     const raw = await this.runShellCommand(serial, 'settings get secure enabled_accessibility_services');
-    const current = raw === 'null' ? '' : raw;
-    const pkg = serviceId.split('/')[0];
+    const current = (raw === 'null' || !raw) ? '' : raw.trim();
+
+    // Build the canonical list, stripping both the primary and AOSP fallback variants
     let list = current ? current.split(':').filter(Boolean) : [];
 
     if (enable) {
-      if (!list.some((s) => s.includes(pkg))) { list.push(serviceId); }
+      // Remove any stale AOSP fallback entry before adding the canonical one
+      list = list.filter((s) => s !== SELECT_TO_SPEAK_SERVICE_AOSP);
+      if (!list.includes(serviceId)) {
+        list.push(serviceId);
+      }
     } else {
-      list = list.filter((s) => !s.includes(pkg));
+      // Remove both the canonical and any AOSP fallback form
+      list = list.filter((s) => s !== serviceId && s !== SELECT_TO_SPEAK_SERVICE_AOSP);
     }
 
     if (list.length === 0) {
-      // `settings put ... ""` is rejected by Android with "Bad arguments".
-      // Use `settings delete` to clear the key instead.
+      // `settings put ... ""` is rejected by Android – delete the key instead.
       await this.runShellCommand(serial, 'settings delete secure enabled_accessibility_services');
       await this.runShellCommand(serial, 'settings put secure accessibility_enabled 0');
     } else {
-      // Colon-separated list; no shell quotes needed and they can cause issues on some hosts.
       await this.runShellCommand(serial, `settings put secure enabled_accessibility_services ${list.join(':')}`);
       await this.runShellCommand(serial, 'settings put secure accessibility_enabled 1');
+    }
+
+    // Select to Speak also requires accessibility_button_targets to be kept in sync
+    if (serviceId === SELECT_TO_SPEAK_SERVICE || serviceId === SELECT_TO_SPEAK_SERVICE_AOSP) {
+      try {
+        const btnRaw = await this.runShellCommand(serial, 'settings get secure accessibility_button_targets');
+        const btnCurrent = (!btnRaw || btnRaw.trim() === 'null') ? '' : btnRaw.trim();
+        let btnList = btnCurrent ? btnCurrent.split(':').filter(Boolean) : [];
+
+        if (enable) {
+          btnList = btnList.filter((s) => s !== SELECT_TO_SPEAK_SERVICE_AOSP);
+          if (!btnList.includes(SELECT_TO_SPEAK_SERVICE)) {
+            btnList.push(SELECT_TO_SPEAK_SERVICE);
+          }
+        } else {
+          btnList = btnList.filter((s) => s !== SELECT_TO_SPEAK_SERVICE && s !== SELECT_TO_SPEAK_SERVICE_AOSP);
+        }
+
+        if (btnList.length === 0) {
+          await this.runShellCommand(serial, 'settings delete secure accessibility_button_targets');
+        } else {
+          await this.runShellCommand(serial, `settings put secure accessibility_button_targets ${btnList.join(':')}`);
+        }
+      } catch { /* non-critical – older API levels may not have accessibility_button_targets */ }
     }
   }
 

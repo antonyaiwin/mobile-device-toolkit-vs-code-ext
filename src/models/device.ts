@@ -31,7 +31,14 @@ export interface DeviceSettingsState {
 // ── Accessibility service identifiers ───────────────────────────────────────
 export const TALKBACK_SERVICE =
   'com.google.android.marvin.talkback/com.google.android.marvin.talkback.TalkBackService';
+
+// On Google API emulators/devices, Select to Speak ships inside the same APK as TalkBack.
+// The component is under com.google.android.marvin.talkback package but with a different class.
 export const SELECT_TO_SPEAK_SERVICE =
+  'com.google.android.marvin.talkback/com.google.android.accessibility.selecttospeak.SelectToSpeakService';
+
+// AOSP fallback (used on devices without Google Accessibility Suite)
+export const SELECT_TO_SPEAK_SERVICE_AOSP =
   'com.google.android.accessibility.selecttospeak/.SelectToSpeakService';
 
 // ── Navigation mode labels ───────────────────────────────────────────────────
