@@ -6,7 +6,7 @@
   "publisher": "emulator-extended-controls",
   "icon": "assets/icon.png",
   "engines": {
-    "vscode": "^1.100.0"
+    "vscode": "^1.90.0"
   },
   "categories": [
     "Other",
@@ -26,8 +26,7 @@
     "url": "https://github.com/your-username/emulator-extended-controls"
   },
   "activationEvents": [
-    "onStartupFinished",
-    "onView:emulatorDeviceControls"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -342,7 +341,7 @@
     "@types/jsdom": "^28.0.3",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.19.20",
-    "@types/vscode": "1.107.0",
+    "@types/vscode": "1.90.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.27.3",
