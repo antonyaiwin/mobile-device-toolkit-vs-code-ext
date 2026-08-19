@@ -5,7 +5,6 @@ import { QuickPickService } from '../ui/quickPickService';
 
 /**
  * Register device-related commands:
- *  - openControls    → open Device Settings webview panel
  *  - selectDevice    → Quick Pick device selector
  *  - refreshDevices  → manual ADB refresh
  */
@@ -18,13 +17,10 @@ export function registerDeviceCommands(
   // ── Open Device Controls sidebar ─────────────────────────────────────────
   context.subscriptions.push(
     vscode.commands.registerCommand('emulator-extended-controls.openControls', async () => {
-      // Focus the Activity Bar container, then focus the specific view.
-      // VS Code auto-generates a `<viewId>.focus` command for every registered view.
       await vscode.commands.executeCommand('workbench.view.extension.emulatorDeviceControlsContainer');
       await vscode.commands.executeCommand('emulatorDeviceControls.focus');
     })
   );
-
 
   // ── Select Device (command palette / toolbar) ─────────────────────────────
   context.subscriptions.push(

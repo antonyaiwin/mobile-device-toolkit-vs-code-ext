@@ -29,8 +29,9 @@ export class ToolbarService {
     const set = (key: string, val: boolean) =>
       void vscode.commands.executeCommand('setContext', `emulator-extended-controls.${key}`, val);
 
-    // Primary icon – always visible when a device is connected
-    set('hasDevices',       has);
+    // Primary icon – visible when a device is connected AND enabled in settings
+    set('hasDevices',        has);
+    set('showOpenControls',  has && s.showOpenControlsButton);
 
     // Optional quick-action buttons – visible only when: device connected AND user enabled them
     set('showDarkMode',      has && s.showDarkModeButton);

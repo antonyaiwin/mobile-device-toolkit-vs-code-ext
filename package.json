@@ -52,7 +52,7 @@
     "commands": [
       {
         "command": "emulator-extended-controls.openControls",
-        "title": "Open Device Settings",
+        "title": "Open Device Controls",
         "category": "Emulator",
         "icon": {
           "light": "./assets/icons/mobile_menu_light.svg",
@@ -154,7 +154,7 @@
       "debug/toolBar": [
         {
           "command": "emulator-extended-controls.openControls",
-          "when": "emulator-extended-controls.hasDevices",
+          "when": "emulator-extended-controls.showOpenControls",
           "group": "navigation@109"
         },
         {
@@ -203,11 +203,6 @@
           "command": "emulator-extended-controls.avd.refresh",
           "when": "view == emulatorDeviceControls",
           "group": "navigation@0"
-        },
-        {
-          "command": "emulator-extended-controls.openControls",
-          "when": "view == emulatorDeviceControls",
-          "group": "navigation@1"
         }
       ],
       "commandPalette": [
@@ -265,56 +260,73 @@
       "title": "Emulator Extended Controls",
       "properties": {
         "emulator-extended-controls.autoDetectDevices": {
+          "order": 1,
           "type": "boolean",
           "default": true,
           "description": "Automatically detect and monitor connected Android devices."
         },
+        "emulator-extended-controls.showOpenControlsButton": {
+          "order": 2,
+          "type": "boolean",
+          "default": true,
+          "description": "Show the Open Device Controls button on the debug toolbar."
+        },
         "emulator-extended-controls.showDarkModeButton": {
+          "order": 3,
           "type": "boolean",
           "default": false,
           "description": "Show a Dark Mode toggle button in the debug toolbar."
         },
         "emulator-extended-controls.showNavModeButton": {
+          "order": 4,
           "type": "boolean",
           "default": false,
           "description": "Show a Navigation Mode picker button in the debug toolbar."
         },
         "emulator-extended-controls.showTalkBackButton": {
+          "order": 5,
           "type": "boolean",
           "default": false,
           "description": "Show a TalkBack toggle button in the debug toolbar."
         },
         "emulator-extended-controls.showSelectToSpeakButton": {
+          "order": 6,
           "type": "boolean",
           "default": false,
           "description": "Show a Select to Speak toggle button in the debug toolbar."
         },
         "emulator-extended-controls.showFontSizeButton": {
+          "order": 7,
           "type": "boolean",
           "default": false,
           "description": "Show a Font Size picker button in the debug toolbar."
         },
         "emulator-extended-controls.showDisplaySizeButton": {
+          "order": 8,
           "type": "boolean",
           "default": false,
           "description": "Show a Display Size picker button in the debug toolbar."
         },
         "emulator-extended-controls.showLayoutBoundsButton": {
+          "order": 9,
           "type": "boolean",
           "default": false,
           "description": "Show a Layout Bounds toggle button in the debug toolbar."
         },
         "emulator-extended-controls.showRecordButton": {
+          "order": 10,
           "type": "boolean",
           "default": false,
           "description": "Show a Screen Recording button in the debug toolbar."
         },
         "emulator-extended-controls.openRecordingAfterSave": {
+          "order": 11,
           "type": "boolean",
           "default": false,
           "description": "Automatically open the saved screen recording in the VS Code media viewer after stopping."
         },
         "emulator-extended-controls.outputDirectory": {
+          "order": 12,
           "type": "string",
           "default": "",
           "description": "Directory to save screen recordings. Defaults to 'emulator-captures/' in the workspace root."

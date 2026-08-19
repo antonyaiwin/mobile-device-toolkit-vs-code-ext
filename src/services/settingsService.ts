@@ -22,6 +22,7 @@ export class SettingsService {
     return {
       autoDetectDevices:      c.get<boolean>('autoDetectDevices', true),
       showDarkModeButton:     c.get<boolean>('showDarkModeButton', false),
+      showOpenControlsButton: c.get<boolean>('showOpenControlsButton', true),
       showNavModeButton:      c.get<boolean>('showNavModeButton', false),
       showTalkBackButton:     c.get<boolean>('showTalkBackButton', false),
       showSelectToSpeakButton: c.get<boolean>('showSelectToSpeakButton', false),

@@ -3,6 +3,7 @@ export interface ExtensionSettings {
   autoDetectDevices: boolean;
   /** Individual toolbar quick-action buttons */
   showDarkModeButton: boolean;
+  showOpenControlsButton: boolean;
   showNavModeButton: boolean;
   showTalkBackButton: boolean;
   showSelectToSpeakButton: boolean;
