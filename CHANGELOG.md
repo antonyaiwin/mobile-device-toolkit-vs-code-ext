@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **Mobile Device Toolkit** will be documented in this file.
+All notable changes to **Mobile Toolkit** will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
@@ -39,6 +39,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Multi-device selector for switching active devices during sessions.
 
 - **Configuration & UX**:
-  - Settings namespace under `mobile-device-toolkit.*`.
+  - Settings namespace under `mobile-toolkit.*`.
   - Explicit ordering of all extension settings in the VS Code Settings UI.
-  - Command Palette integration for all commands under the `Mobile Device Toolkit` category.
+  - Command Palette integration for all commands under the `Mobile Toolkit` category.

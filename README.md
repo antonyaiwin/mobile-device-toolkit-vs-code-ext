@@ -1,4 +1,4 @@
-# Mobile Device Toolkit
+# Mobile Toolkit
 
 > **Android Studio-style mobile & emulator developer controls inside VS Code's debug toolbar and sidebar.** Easily manage Dark Mode, Navigation Mode, Accessibility (TalkBack & Select to Speak), Display & Font Scaling, Layout Bounds, and Screen Recording directly from your editor.
 
@@ -9,9 +9,9 @@
 <br>
 
 <p align="center">
-  <img src="assets/docs/screenshot_1.gif" width="48%" alt="Mobile Device Toolkit Overview Demo">
+  <img src="assets/docs/screenshot_1.gif" width="48%" alt="Mobile Toolkit Overview Demo">
   &nbsp;&nbsp;
-  <img src="assets/docs/screenshot_2.gif" width="48%" alt="Mobile Device Toolkit Interactive Controls Demo">
+  <img src="assets/docs/screenshot_2.gif" width="48%" alt="Mobile Toolkit Interactive Controls Demo">
 </p>
 
 <br>
@@ -22,7 +22,7 @@
 
 When developing mobile applications with **Flutter**, **React Native**, or **Android Native** in VS Code, toggling device settings (like dark mode, font scale, or layout bounds) normally requires opening Android Studio's Extended Controls, digging through Android OS Settings menus, or executing manual ADB CLI commands.
 
-**Mobile Device Toolkit** brings these essential controls right into VS Code:
+**Mobile Toolkit** brings these essential controls right into VS Code:
 
 - A dedicated **Sidebar Panel** in the Activity Bar for visual management.
 - Quick-action buttons integrated into VS Code's **Debug Toolbar**.
@@ -58,13 +58,13 @@ When developing mobile applications with **Flutter**, **React Native**, or **And
 
 1. Open VS Code.
 2. Go to **Extensions** (`Ctrl+Shift+X` / `Cmd+Shift+X`).
-3. Search for **Mobile Device Toolkit**.
+3. Search for **Mobile Toolkit**.
 4. Click **Install**.
 
 ### Installing from VSIX Package
 
 ```bash
-code --install-extension mobile-device-toolkit-0.0.1.vsix
+code --install-extension mobile-toolkit-0.0.1.vsix
 ```
 
 ---
@@ -73,7 +73,7 @@ code --install-extension mobile-device-toolkit-0.0.1.vsix
 
 ### 1. Activity Bar Sidebar
 
-1. Click the **Mobile Device Toolkit** icon on the VS Code Activity Bar (left sidebar).
+1. Click the **Mobile Toolkit** icon on the VS Code Activity Bar (left sidebar).
 2. Connected Android emulators/devices will automatically appear.
 3. Click on the device name header (e.g. `Pixel 7 Pro (emulator-5554)`) at the top of the sidebar view anytime to change the active device.
 4. Use the toggle buttons, dropdowns, and screen recording controls to manage the device in real-time.
@@ -82,13 +82,13 @@ code --install-extension mobile-device-toolkit-0.0.1.vsix
 
 When you start a debug session (e.g., `Flutter: Run & Debug` or `React Native`):
 
-1. The **Mobile Device Toolkit** icon appears on the floating Debug Toolbar.
+1. The **Mobile Toolkit** icon appears on the floating Debug Toolbar.
 2. Click it to bring focus to the device controls.
 3. Enable additional quick-action icons (e.g., Dark Mode, Record Screen) via settings to customize your debug toolbar.
 
 ### 3. Command Palette
 
-Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) and type **Mobile Device Toolkit**:
+Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) and type **Mobile Toolkit**:
 
 - `Select Android Device`
 - `Refresh Device List`
@@ -105,7 +105,7 @@ Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) and type **Mobile Device Toolki
 
 ## Configuration Options
 
-Customize settings in **Settings** (`Ctrl+,` / `Cmd+,`) under **Mobile Device Toolkit** (`mobile-device-toolkit.*`).
+Customize settings in **Settings** (`Ctrl+,` / `Cmd+,`) under **Mobile Toolkit** (`mobile-toolkit.*`).
 
 | Setting                   | Type      | Default | Description                                                                                  |
 | ------------------------- | --------- | ------- | -------------------------------------------------------------------------------------------- |
@@ -126,14 +126,14 @@ Customize settings in **Settings** (`Ctrl+,` / `Cmd+,`) under **Mobile Device To
 
 ```json
 {
-  "mobile-device-toolkit.autoDetectDevices": true,
-  "mobile-device-toolkit.showOpenControlsButton": true,
-  "mobile-device-toolkit.showDarkModeButton": true,
-  "mobile-device-toolkit.showNavModeButton": true,
-  "mobile-device-toolkit.showLayoutBoundsButton": true,
-  "mobile-device-toolkit.showRecordButton": true,
-  "mobile-device-toolkit.openRecordingAfterSave": true,
-  "mobile-device-toolkit.outputDirectory": "captures/"
+  "mobile-toolkit.autoDetectDevices": true,
+  "mobile-toolkit.showOpenControlsButton": true,
+  "mobile-toolkit.showDarkModeButton": true,
+  "mobile-toolkit.showNavModeButton": true,
+  "mobile-toolkit.showLayoutBoundsButton": true,
+  "mobile-toolkit.showRecordButton": true,
+  "mobile-toolkit.openRecordingAfterSave": true,
+  "mobile-toolkit.outputDirectory": "captures/"
 }
 ```
 
@@ -157,8 +157,8 @@ Contributions, bug reports, and feature requests are welcome!
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/antonyaiwin/mobile-device-toolkit-vs-code-ext.git
-   cd mobile-device-toolkit-vs-code-ext
+   git clone https://github.com/antonyaiwin/mobile-toolkit-vs-code-ext.git
+   cd mobile-toolkit-vs-code-ext
    ```
 
 2. **Install dependencies**:

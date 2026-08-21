@@ -56,7 +56,7 @@ The extension shall contribute controls to the VS Code `debug/toolBar`.
 ### Suggested Command ID
 
 ```json
-mobile-device-toolkit.openControls
+mobile-toolkit.openControls
 ```
 
 ---
@@ -332,17 +332,17 @@ shall execute on Pixel 8 Emulator only.
 ### Suggested Settings Namespace
 
 ```json
-mobile-device-toolkit.*
+mobile-toolkit.*
 ```
 
 ### Example Settings
 
 ```json
 {
-  "mobile-device-toolkit.showDarkModeButton": true,
-  "mobile-device-toolkit.showScreenshotButton": true,
-  "mobile-device-toolkit.showRecordButton": false,
-  "mobile-device-toolkit.autoDetectDevices": true
+  "mobile-toolkit.showDarkModeButton": true,
+  "mobile-toolkit.showScreenshotButton": true,
+  "mobile-toolkit.showRecordButton": false,
+  "mobile-toolkit.autoDetectDevices": true
 }
 ```
 

@@ -1,8 +1,8 @@
-/** Global extension constants for Mobile Device Toolkit */
-export const EXTENSION_ID = 'mobile-device-toolkit';
-export const EXTENSION_NAME = 'Mobile Device Toolkit';
-export const CONFIG_NAMESPACE = 'mobile-device-toolkit';
-export const CATEGORY_NAME = 'Mobile Device Toolkit';
+/** Global extension constants for Mobile Toolkit */
+export const EXTENSION_ID = 'mobile-toolkit';
+export const EXTENSION_NAME = 'Mobile Toolkit';
+export const CONFIG_NAMESPACE = 'mobile-toolkit';
+export const CATEGORY_NAME = 'Mobile Toolkit';
 
 /** View & Container IDs */
 export const VIEW_CONTAINER_ID = 'mobileDeviceToolkitContainer';

@@ -1,13 +1,13 @@
 {
-  "name": "mobile-device-toolkit",
-  "displayName": "Mobile Device Toolkit",
+  "name": "mobile-toolkit",
+  "displayName": "Mobile Toolkit",
   "description": "Android Studio-style mobile & emulator developer controls. Manage Dark Mode, Navigation Mode, Accessibility (TalkBack & Select to Speak), Display & Font Scaling, Layout Bounds, and Screen Recording directly from your editor.",
   "version": "0.0.1",
   "publisher": "aiwin",
   "license": "MIT",
-  "homepage": "https://github.com/antonyaiwin/mobile-device-toolkit-vs-code-ext#readme",
+  "homepage": "https://github.com/antonyaiwin/mobile-toolkit-vs-code-ext#readme",
   "bugs": {
-    "url": "https://github.com/antonyaiwin/mobile-device-toolkit-vs-code-ext/issues"
+    "url": "https://github.com/antonyaiwin/mobile-toolkit-vs-code-ext/issues"
   },
   "icon": "assets/icon.png",
   "engines": {
@@ -28,7 +28,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/antonyaiwin/mobile-device-toolkit-vs-code-ext.git"
+    "url": "https://github.com/antonyaiwin/mobile-toolkit-vs-code-ext.git"
   },
   "activationEvents": [
     "onStartupFinished"
@@ -39,7 +39,7 @@
       "activitybar": [
         {
           "id": "mobileDeviceToolkitContainer",
-          "title": "Mobile Device Toolkit",
+          "title": "Mobile Toolkit",
           "icon": "assets/avd-icon.svg"
         }
       ]
@@ -48,7 +48,7 @@
       "mobileDeviceToolkitContainer": [
         {
           "id": "mobileDeviceToolkit",
-          "name": "Mobile Device Toolkit",
+          "name": "Mobile Toolkit",
           "icon": "assets/avd-icon.svg",
           "type": "webview"
         }
@@ -56,281 +56,281 @@
     },
     "commands": [
       {
-        "command": "mobile-device-toolkit.openControls",
+        "command": "mobile-toolkit.openControls",
         "title": "Open Device Controls",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": {
           "light": "./assets/icons/mobile_menu_light.svg",
           "dark": "./assets/icons/mobile_menu_dark.svg"
         }
       },
       {
-        "command": "mobile-device-toolkit.selectDevice",
+        "command": "mobile-toolkit.selectDevice",
         "title": "Select Android Device",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": {
           "light": "./assets/icons/mobile_menu_light.svg",
           "dark": "./assets/icons/mobile_menu_dark.svg"
         }
       },
       {
-        "command": "mobile-device-toolkit.refreshDevices",
+        "command": "mobile-toolkit.refreshDevices",
         "title": "Refresh Device List",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": "$(refresh)"
       },
       {
-        "command": "mobile-device-toolkit.startRecording",
+        "command": "mobile-toolkit.startRecording",
         "title": "Record Screen",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": "$(record)"
       },
       {
-        "command": "mobile-device-toolkit.toolbarToggleDarkMode",
+        "command": "mobile-toolkit.toolbarToggleDarkMode",
         "title": "Toggle Dark Mode",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": {
           "light": "./assets/icons/dark_mode_light.svg",
           "dark": "./assets/icons/dark_mode_dark.svg"
         }
       },
       {
-        "command": "mobile-device-toolkit.toolbarSetNavMode",
+        "command": "mobile-toolkit.toolbarSetNavMode",
         "title": "Navigation Mode…",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": {
           "light": "./assets/icons/steppers_light.svg",
           "dark": "./assets/icons/steppers_dark.svg"
         }
       },
       {
-        "command": "mobile-device-toolkit.toolbarToggleTalkBack",
+        "command": "mobile-toolkit.toolbarToggleTalkBack",
         "title": "Toggle TalkBack",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": {
           "light": "./assets/icons/text_to_speech_light.svg",
           "dark": "./assets/icons/text_to_speech_dark.svg"
         }
       },
       {
-        "command": "mobile-device-toolkit.toolbarToggleSelectToSpeak",
+        "command": "mobile-toolkit.toolbarToggleSelectToSpeak",
         "title": "Toggle Select to Speak",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": {
           "light": "./assets/icons/select_to_speak_light.svg",
           "dark": "./assets/icons/select_to_speak_dark.svg"
         }
       },
       {
-        "command": "mobile-device-toolkit.toolbarSetFontSize",
+        "command": "mobile-toolkit.toolbarSetFontSize",
         "title": "Font Size…",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": {
           "light": "./assets/icons/format_size_light.svg",
           "dark": "./assets/icons/format_size_dark.svg"
         }
       },
       {
-        "command": "mobile-device-toolkit.toolbarSetDisplaySize",
+        "command": "mobile-toolkit.toolbarSetDisplaySize",
         "title": "Display Size…",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": {
           "light": "./assets/icons/settings_overscan_light.svg",
           "dark": "./assets/icons/settings_overscan_dark.svg"
         }
       },
       {
-        "command": "mobile-device-toolkit.toolbarToggleLayoutBounds",
+        "command": "mobile-toolkit.toolbarToggleLayoutBounds",
         "title": "Toggle Layout Bounds",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": {
           "light": "./assets/icons/border_horizontal_light.svg",
           "dark": "./assets/icons/border_horizontal_dark.svg"
         }
       },
       {
-        "command": "mobile-device-toolkit.avd.refresh",
+        "command": "mobile-toolkit.avd.refresh",
         "title": "Refresh Device Controls",
-        "category": "Mobile Device Toolkit",
+        "category": "Mobile Toolkit",
         "icon": "$(refresh)"
       }
     ],
     "menus": {
       "debug/toolBar": [
         {
-          "command": "mobile-device-toolkit.openControls",
-          "when": "mobile-device-toolkit.showOpenControls",
+          "command": "mobile-toolkit.openControls",
+          "when": "mobile-toolkit.showOpenControls",
           "group": "navigation@109"
         },
         {
-          "command": "mobile-device-toolkit.toolbarToggleDarkMode",
-          "when": "mobile-device-toolkit.showDarkMode",
+          "command": "mobile-toolkit.toolbarToggleDarkMode",
+          "when": "mobile-toolkit.showDarkMode",
           "group": "navigation@101"
         },
         {
-          "command": "mobile-device-toolkit.toolbarSetNavMode",
-          "when": "mobile-device-toolkit.showNavMode",
+          "command": "mobile-toolkit.toolbarSetNavMode",
+          "when": "mobile-toolkit.showNavMode",
           "group": "navigation@102"
         },
         {
-          "command": "mobile-device-toolkit.toolbarToggleTalkBack",
-          "when": "mobile-device-toolkit.showTalkBack",
+          "command": "mobile-toolkit.toolbarToggleTalkBack",
+          "when": "mobile-toolkit.showTalkBack",
           "group": "navigation@103"
         },
         {
-          "command": "mobile-device-toolkit.toolbarToggleSelectToSpeak",
-          "when": "mobile-device-toolkit.showSelectToSpeak",
+          "command": "mobile-toolkit.toolbarToggleSelectToSpeak",
+          "when": "mobile-toolkit.showSelectToSpeak",
           "group": "navigation@104"
         },
         {
-          "command": "mobile-device-toolkit.toolbarSetFontSize",
-          "when": "mobile-device-toolkit.showFontSize",
+          "command": "mobile-toolkit.toolbarSetFontSize",
+          "when": "mobile-toolkit.showFontSize",
           "group": "navigation@105"
         },
         {
-          "command": "mobile-device-toolkit.toolbarSetDisplaySize",
-          "when": "mobile-device-toolkit.showDisplaySize",
+          "command": "mobile-toolkit.toolbarSetDisplaySize",
+          "when": "mobile-toolkit.showDisplaySize",
           "group": "navigation@106"
         },
         {
-          "command": "mobile-device-toolkit.toolbarToggleLayoutBounds",
-          "when": "mobile-device-toolkit.showLayoutBounds",
+          "command": "mobile-toolkit.toolbarToggleLayoutBounds",
+          "when": "mobile-toolkit.showLayoutBounds",
           "group": "navigation@107"
         },
         {
-          "command": "mobile-device-toolkit.startRecording",
-          "when": "mobile-device-toolkit.showRecord",
+          "command": "mobile-toolkit.startRecording",
+          "when": "mobile-toolkit.showRecord",
           "group": "navigation@108"
         }
       ],
       "view/title": [
         {
-          "command": "mobile-device-toolkit.avd.refresh",
+          "command": "mobile-toolkit.avd.refresh",
           "when": "view == mobileDeviceToolkit",
           "group": "navigation@0"
         }
       ],
       "commandPalette": [
         {
-          "command": "mobile-device-toolkit.openControls",
+          "command": "mobile-toolkit.openControls",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.selectDevice",
+          "command": "mobile-toolkit.selectDevice",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.refreshDevices",
+          "command": "mobile-toolkit.refreshDevices",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.toolbarToggleDarkMode",
+          "command": "mobile-toolkit.toolbarToggleDarkMode",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.toolbarSetNavMode",
+          "command": "mobile-toolkit.toolbarSetNavMode",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.toolbarToggleTalkBack",
+          "command": "mobile-toolkit.toolbarToggleTalkBack",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.toolbarToggleSelectToSpeak",
+          "command": "mobile-toolkit.toolbarToggleSelectToSpeak",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.toolbarSetFontSize",
+          "command": "mobile-toolkit.toolbarSetFontSize",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.toolbarSetDisplaySize",
+          "command": "mobile-toolkit.toolbarSetDisplaySize",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.toolbarToggleLayoutBounds",
+          "command": "mobile-toolkit.toolbarToggleLayoutBounds",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.startRecording",
+          "command": "mobile-toolkit.startRecording",
           "when": "true"
         },
         {
-          "command": "mobile-device-toolkit.avd.refresh",
+          "command": "mobile-toolkit.avd.refresh",
           "when": "true"
         }
       ]
     },
     "configuration": {
-      "title": "Mobile Device Toolkit",
+      "title": "Mobile Toolkit",
       "properties": {
-        "mobile-device-toolkit.autoDetectDevices": {
+        "mobile-toolkit.autoDetectDevices": {
           "order": 1,
           "type": "boolean",
           "default": true,
           "description": "Automatically detect and monitor connected Android devices."
         },
-        "mobile-device-toolkit.showOpenControlsButton": {
+        "mobile-toolkit.showOpenControlsButton": {
           "order": 2,
           "type": "boolean",
           "default": true,
           "description": "Show the Open Device Controls button on the debug toolbar."
         },
-        "mobile-device-toolkit.showDarkModeButton": {
+        "mobile-toolkit.showDarkModeButton": {
           "order": 3,
           "type": "boolean",
           "default": false,
           "description": "Show a Dark Mode toggle button in the debug toolbar."
         },
-        "mobile-device-toolkit.showNavModeButton": {
+        "mobile-toolkit.showNavModeButton": {
           "order": 4,
           "type": "boolean",
           "default": false,
           "description": "Show a Navigation Mode picker button in the debug toolbar."
         },
-        "mobile-device-toolkit.showTalkBackButton": {
+        "mobile-toolkit.showTalkBackButton": {
           "order": 5,
           "type": "boolean",
           "default": false,
           "description": "Show a TalkBack toggle button in the debug toolbar."
         },
-        "mobile-device-toolkit.showSelectToSpeakButton": {
+        "mobile-toolkit.showSelectToSpeakButton": {
           "order": 6,
           "type": "boolean",
           "default": false,
           "description": "Show a Select to Speak toggle button in the debug toolbar."
         },
-        "mobile-device-toolkit.showFontSizeButton": {
+        "mobile-toolkit.showFontSizeButton": {
           "order": 7,
           "type": "boolean",
           "default": false,
           "description": "Show a Font Size picker button in the debug toolbar."
         },
-        "mobile-device-toolkit.showDisplaySizeButton": {
+        "mobile-toolkit.showDisplaySizeButton": {
           "order": 8,
           "type": "boolean",
           "default": false,
           "description": "Show a Display Size picker button in the debug toolbar."
         },
-        "mobile-device-toolkit.showLayoutBoundsButton": {
+        "mobile-toolkit.showLayoutBoundsButton": {
           "order": 9,
           "type": "boolean",
           "default": false,
           "description": "Show a Layout Bounds toggle button in the debug toolbar."
         },
-        "mobile-device-toolkit.showRecordButton": {
+        "mobile-toolkit.showRecordButton": {
           "order": 10,
           "type": "boolean",
           "default": false,
           "description": "Show a Screen Recording button in the debug toolbar."
         },
-        "mobile-device-toolkit.openRecordingAfterSave": {
+        "mobile-toolkit.openRecordingAfterSave": {
           "order": 11,
           "type": "boolean",
           "default": false,
           "description": "Automatically open the saved screen recording in the VS Code media viewer after stopping."
         },
-        "mobile-device-toolkit.outputDirectory": {
+        "mobile-toolkit.outputDirectory": {
           "order": 12,
           "type": "string",
           "default": "",
