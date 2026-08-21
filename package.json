@@ -1,16 +1,20 @@
 {
   "name": "mobile-device-toolkit",
   "displayName": "Mobile Device Toolkit",
-  "description": "Android Studio-style mobile & emulator developer controls inside VS Code. Manage Dark Mode, Navigation Mode, Accessibility (TalkBack & Select to Speak), Display & Font Scaling, Layout Bounds, and Screen Recording directly from your editor.",
+  "description": "Android Studio-style mobile & emulator developer controls. Manage Dark Mode, Navigation Mode, Accessibility (TalkBack & Select to Speak), Display & Font Scaling, Layout Bounds, and Screen Recording directly from your editor.",
   "version": "0.0.1",
   "publisher": "aiwin",
+  "license": "MIT",
+  "homepage": "https://github.com/antonyaiwin/mobile-device-toolkit-vs-code-ext#readme",
+  "bugs": {
+    "url": "https://github.com/antonyaiwin/mobile-device-toolkit-vs-code-ext/issues"
+  },
   "icon": "assets/icon.png",
   "engines": {
     "vscode": "^1.90.0"
   },
   "categories": [
-    "Other",
-    "Debuggers"
+    "Other"
   ],
   "keywords": [
     "android",
