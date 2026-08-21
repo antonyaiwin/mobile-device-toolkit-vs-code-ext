@@ -17,13 +17,20 @@ export class AdbService {
   private _recordingProcess: ChildProcess | null = null;
   /** Remote path of the current recording on the device */
   private _currentRemotePath: string | null = null;
+  /** Serial of the active recording device */
+  private _recordingSerial: string | null = null;
 
-  get isRecording(): boolean { return this._recordingProcess !== null; }
+  get isRecording(): boolean { return this._recordingProcess !== null || this._currentRemotePath !== null; }
   get currentRemotePath(): string | null { return this._currentRemotePath; }
+  get recordingSerial(): string | null { return this._recordingSerial; }
 
   /** Fires `true` when recording starts, `false` when it stops. */
   private readonly _onRecordingChanged = new vscode.EventEmitter<boolean>();
   readonly onRecordingChanged = this._onRecordingChanged.event;
+
+  /** Fires when recording process auto-ends (e.g. 3-minute Android limit reached). */
+  private readonly _onRecordingAutoEnded = new vscode.EventEmitter<{ serial: string; remotePath: string }>();
+  readonly onRecordingAutoEnded = this._onRecordingAutoEnded.event;
 
   // ── Availability ────────────────────────────────────────────────────────────
 
@@ -262,7 +269,10 @@ export class AdbService {
    *    very large → scale to ≤1280 on the longer side with even numbers
    */
   async startScreenRecord(serial: string): Promise<string> {
-    if (this._recordingProcess) { throw new Error('A recording is already in progress.'); }
+    if (this._recordingProcess || this._currentRemotePath) {
+      throw new Error('A recording is already in progress.');
+    }
+    this._recordingSerial = serial;
     this._currentRemotePath = '/sdcard/emulator_recording.mp4';
 
     const size = await this._getCompatibleRecordingSize(serial);
@@ -275,8 +285,20 @@ export class AdbService {
       this._currentRemotePath,
     ];
 
-    this._recordingProcess = spawn(this.adbPath, cmdArgs);
-    this._recordingProcess.on('exit', () => { this._recordingProcess = null; });
+    const proc = spawn(this.adbPath, cmdArgs);
+    this._recordingProcess = proc;
+
+    proc.on('exit', () => {
+      if (this._recordingProcess === proc) {
+        this._recordingProcess = null;
+      }
+      if (this._currentRemotePath) {
+        const remote = this._currentRemotePath;
+        const recSerial = this._recordingSerial ?? serial;
+        this._onRecordingAutoEnded.fire({ serial: recSerial, remotePath: remote });
+      }
+    });
+
     this._onRecordingChanged.fire(true);
     return this._currentRemotePath;
   }
@@ -327,40 +349,44 @@ export class AdbService {
    *  4. Pull the finished file
    */
   async stopScreenRecord(serial: string, remotePath: string, localPath: string): Promise<void> {
-    // 1. Send SIGINT so screenrecord writes the MP4 header and exits cleanly
     try {
-      const pid = await this.runShellCommand(serial, 'pidof screenrecord');
-      if (pid.trim()) {
-        await this.runShellCommand(serial, `kill -2 ${pid.trim()}`);
-      }
-    } catch { /* process may have already exited */ }
-
-    // 2. Poll until the device process exits (up to 12 s).
-    //    Pulling before this produces a truncated/corrupt file because the
-    //    MP4 moov atom hasn't been written yet.
-    const deadline = Date.now() + 12_000;
-    while (Date.now() < deadline) {
-      await new Promise<void>((r) => setTimeout(r, 600));
+      // 1. Send SIGINT so screenrecord writes the MP4 header and exits cleanly
       try {
         const pid = await this.runShellCommand(serial, 'pidof screenrecord');
-        if (!pid.trim()) { break; }
-      } catch { break; }
-    }
+        if (pid.trim()) {
+          await this.runShellCommand(serial, `kill -2 ${pid.trim()}`);
+        }
+      } catch { /* process may have already exited */ }
 
-    // 3. Kill the local adb child process (device side is done, safe to do now)
-    if (this._recordingProcess) {
-      this._recordingProcess.kill();
+      // 2. Poll until the device process exits (up to 12 s).
+      //    Pulling before this produces a truncated/corrupt file because the
+      //    MP4 moov atom hasn't been written yet.
+      const deadline = Date.now() + 12_000;
+      while (Date.now() < deadline) {
+        await new Promise<void>((r) => setTimeout(r, 600));
+        try {
+          const pid = await this.runShellCommand(serial, 'pidof screenrecord');
+          if (!pid.trim()) { break; }
+        } catch { break; }
+      }
+
+      // 3. Kill the local adb child process (device side is done, safe to do now)
+      if (this._recordingProcess) {
+        try { this._recordingProcess.kill(); } catch { /* process may already be dead */ }
+        this._recordingProcess = null;
+      }
+
+      // 4. Short sdcard flush pause, then pull
+      await new Promise<void>((r) => setTimeout(r, 500));
+      await execAsync(`${this.adbPath} -s ${serial} pull ${remotePath} "${localPath}"`);
+      await execAsync(`${this.adbPath} -s ${serial} shell rm -f ${remotePath}`);
+    } finally {
       this._recordingProcess = null;
+      this._currentRemotePath = null;
+      this._recordingSerial = null;
+      // Notify all listeners that recording has stopped
+      this._onRecordingChanged.fire(false);
     }
-    this._currentRemotePath = null;
-
-    // 4. Short sdcard flush pause, then pull
-    await new Promise<void>((r) => setTimeout(r, 500));
-    await execAsync(`${this.adbPath} -s ${serial} pull ${remotePath} "${localPath}"`);
-    await execAsync(`${this.adbPath} -s ${serial} shell rm -f ${remotePath}`);
-
-    // Notify all listeners (e.g. DeviceSettingsPanel) that recording has stopped
-    this._onRecordingChanged.fire(false);
   }
 
 

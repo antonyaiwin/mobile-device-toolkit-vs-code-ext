@@ -6,6 +6,7 @@ import { SettingsService } from './services/settingsService';
 import { ToolbarService } from './services/toolbarService';
 import { QuickPickService } from './ui/quickPickService';
 import { DeviceControlsView } from './ui/activityBar/deviceControlsView';
+import { RecordingPanel } from './ui/webview/recordingPanel';
 import { registerDeviceCommands } from './commands/deviceCommands';
 import { registerCaptureCommands } from './commands/captureCommands';
 import { registerToolbarCommands } from './commands/toolbarCommands';
@@ -44,6 +45,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   registerDeviceCommands(context, adbService, deviceService, quickPickService);
   registerCaptureCommands(context, adbService, deviceService, quickPickService);
   registerToolbarCommands(context, adbService, deviceService, quickPickService);
+
+  // ── Handle 3-minute recording timeout auto-save ──────────────────────────
+  adbService.onRecordingAutoEnded(async ({ serial }) => {
+    await RecordingPanel.stopCurrent(context, adbService, serial);
+  });
 
   // ── Polling ─────────────────────────────────────────────────────────────
   const settings = settingsService.getSettings();

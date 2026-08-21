@@ -104,6 +104,13 @@ export class RecordingPanel {
       }
     }, null, this._disposables);
 
+    // Auto-save when 3-minute Android timeout is reached
+    adb.onRecordingAutoEnded(async ({ serial }) => {
+      if (!this._stopped) {
+        await this._stopAndSave();
+      }
+    }, null, this._disposables);
+
     // Closing the tab stops and saves the recording.
     // The _stopped guard prevents double-stop if the sidebar already stopped it.
     this._panel.onDidDispose(async () => {
@@ -114,6 +121,8 @@ export class RecordingPanel {
 
   // ── Stop & save (centralized) ────────────────────────────────────────────────
 
+  private static _isStopping = false;
+
   /**
    * The single source of truth for stopping a recording and saving it.
    * Called from both the RecordingPanel stop button and the activity bar sidebar.
@@ -123,21 +132,23 @@ export class RecordingPanel {
     adb: AdbService,
     serial: string
   ): Promise<void> {
-    if (!adb.isRecording) { return; } // already stopped externally (e.g. 3-min limit)
+    if (RecordingPanel._isStopping) { return; }
+    if (!adb.isRecording && !adb.currentRemotePath) { return; }
 
-    // Fire immediately so ALL subscribers (sidebar, etc.) can show "stopping" state
-    RecordingPanel._onStopRequested.fire();
-
-    // Immediately update the panel UI (if open)
-    RecordingPanel.notifyStopping();
-
-    const remotePath = adb.currentRemotePath ?? '/sdcard/emulator_recording.mp4';
-    const outputDir  = RecordingPanel._resolveOutputDir(context);
-    const ts         = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename   = `recording_${ts}.mp4`;
-    const localPath  = path.join(outputDir, filename);
-
+    RecordingPanel._isStopping = true;
     try {
+      // Fire immediately so ALL subscribers (sidebar, etc.) can show "stopping" state
+      RecordingPanel._onStopRequested.fire();
+
+      // Immediately update the panel UI (if open)
+      RecordingPanel.notifyStopping();
+
+      const remotePath = adb.currentRemotePath ?? '/sdcard/emulator_recording.mp4';
+      const outputDir  = RecordingPanel._resolveOutputDir(context);
+      const ts         = new Date().toISOString().replace(/[:.]/g, '-');
+      const filename   = `recording_${ts}.mp4`;
+      const localPath  = path.join(outputDir, filename);
+
       await adb.stopScreenRecord(serial, remotePath, localPath);
       vscode.window.showInformationMessage(`Recording saved: ${filename}`, 'Open').then(async (btn) => {
         if (btn === 'Open') {
@@ -150,6 +161,8 @@ export class RecordingPanel {
       }
     } catch (err) {
       vscode.window.showErrorMessage(`Failed to save recording: ${(err as Error).message}`);
+    } finally {
+      RecordingPanel._isStopping = false;
     }
   }
 
