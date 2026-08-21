@@ -3,6 +3,7 @@ import { AdbService } from '../../services/adbService';
 import { DeviceService } from '../../services/deviceService';
 import { QuickPickService } from '../quickPickService';
 import { RecordingPanel } from '../webview/recordingPanel';
+import { VIEW_ID } from '../../constants';
 import {
   FONT_SCALE_OPTIONS, DISPLAY_DENSITY_OPTIONS,
   TALKBACK_SERVICE, SELECT_TO_SPEAK_SERVICE,
@@ -26,7 +27,7 @@ type InMsg =
  * Renders the same settings as DeviceSettingsPanel in a compact sidebar layout.
  */
 export class DeviceControlsView implements vscode.WebviewViewProvider {
-  static readonly viewType = 'emulatorDeviceControls';
+  static readonly viewType = VIEW_ID;
 
   private _view?: vscode.WebviewView;
 

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { COMMANDS } from '../constants';
 import { AdbService } from '../services/adbService';
 import { DeviceService } from '../services/deviceService';
 import { QuickPickService } from '../ui/quickPickService';
@@ -19,7 +20,7 @@ export function registerCaptureCommands(
   qp: QuickPickService
 ): void {
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.startRecording', async () => {
+    vscode.commands.registerCommand(COMMANDS.START_RECORDING, async () => {
       // If already recording, just surface the existing panel
       if (adb.isRecording) {
         RecordingPanel.reveal();

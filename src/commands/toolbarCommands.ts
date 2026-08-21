@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { COMMANDS } from '../constants';
 import { AdbService } from '../services/adbService';
 import { DeviceService } from '../services/deviceService';
 import { QuickPickService } from '../ui/quickPickService';
@@ -51,7 +52,7 @@ export function registerToolbarCommands(
 
   // ── Toggle Dark Mode ───────────────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.toolbarToggleDarkMode', () =>
+    vscode.commands.registerCommand(COMMANDS.TOGGLE_DARK_MODE, () =>
       withDevice(async (serial, name) => {
         const isEnabled = await adb.getDarkMode(serial);
         await adb.setDarkMode(serial, !isEnabled);
@@ -64,7 +65,7 @@ export function registerToolbarCommands(
 
   // ── Navigation Mode (Quick Pick) ───────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.toolbarSetNavMode', () =>
+    vscode.commands.registerCommand(COMMANDS.SET_NAV_MODE, () =>
       withDevice(async (serial, name) => {
         const current = await adb.getNavigationMode(serial);
         const options: Array<{ label: string; description: string; value: string }> = [
@@ -89,7 +90,7 @@ export function registerToolbarCommands(
 
   // ── Toggle TalkBack ────────────────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.toolbarToggleTalkBack', () =>
+    vscode.commands.registerCommand(COMMANDS.TOGGLE_TALKBACK, () =>
       withDevice(async (serial, name) => {
         const isEnabled = await adb.getAccessibilityServiceEnabled(serial, TALKBACK_SERVICE);
         await adb.setAccessibilityService(serial, TALKBACK_SERVICE, !isEnabled);
@@ -102,7 +103,7 @@ export function registerToolbarCommands(
 
   // ── Toggle Select to Speak ─────────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.toolbarToggleSelectToSpeak', () =>
+    vscode.commands.registerCommand(COMMANDS.TOGGLE_SELECT_TO_SPEAK, () =>
       withDevice(async (serial, name) => {
         const isEnabled = await adb.getAccessibilityServiceEnabled(serial, SELECT_TO_SPEAK_SERVICE);
         await adb.setAccessibilityService(serial, SELECT_TO_SPEAK_SERVICE, !isEnabled);
@@ -115,7 +116,7 @@ export function registerToolbarCommands(
 
   // ── Font Size (Quick Pick) ─────────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.toolbarSetFontSize', () =>
+    vscode.commands.registerCommand(COMMANDS.SET_FONT_SIZE, () =>
       withDevice(async (serial, name) => {
         const current = await adb.getFontScale(serial);
         const options = FONT_SCALE_OPTIONS.map((o) => ({
@@ -139,7 +140,7 @@ export function registerToolbarCommands(
 
   // ── Display Size (Quick Pick) ──────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.toolbarSetDisplaySize', () =>
+    vscode.commands.registerCommand(COMMANDS.SET_DISPLAY_SIZE, () =>
       withDevice(async (serial, name) => {
         const current = await adb.getDisplayDensity(serial);
         const options = DISPLAY_DENSITY_OPTIONS.map((o) => ({
@@ -163,7 +164,7 @@ export function registerToolbarCommands(
 
   // ── Toggle Layout Bounds ───────────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.toolbarToggleLayoutBounds', () =>
+    vscode.commands.registerCommand(COMMANDS.TOGGLE_LAYOUT_BOUNDS, () =>
       withDevice(async (serial, name) => {
         const isEnabled = await adb.getLayoutBounds(serial);
         await adb.setLayoutBounds(serial, !isEnabled);

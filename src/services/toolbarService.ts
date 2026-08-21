@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CONTEXT_KEYS } from '../constants';
 import { DeviceService } from './deviceService';
 import { SettingsService } from './settingsService';
 
@@ -27,20 +28,20 @@ export class ToolbarService {
     const s   = this.settingsService.getSettings();
 
     const set = (key: string, val: boolean) =>
-      void vscode.commands.executeCommand('setContext', `emulator-extended-controls.${key}`, val);
+      void vscode.commands.executeCommand('setContext', key, val);
 
     // Primary icon – visible when a device is connected AND enabled in settings
-    set('hasDevices',        has);
-    set('showOpenControls',  has && s.showOpenControlsButton);
+    set(CONTEXT_KEYS.HAS_DEVICES,        has);
+    set(CONTEXT_KEYS.SHOW_OPEN_CONTROLS,  has && s.showOpenControlsButton);
 
     // Optional quick-action buttons – visible only when: device connected AND user enabled them
-    set('showDarkMode',      has && s.showDarkModeButton);
-    set('showNavMode',       has && s.showNavModeButton);
-    set('showTalkBack',      has && s.showTalkBackButton);
-    set('showSelectToSpeak', has && s.showSelectToSpeakButton);
-    set('showFontSize',      has && s.showFontSizeButton);
-    set('showDisplaySize',   has && s.showDisplaySizeButton);
-    set('showLayoutBounds',  has && s.showLayoutBoundsButton);
-    set('showRecord',        has && s.showRecordButton);
+    set(CONTEXT_KEYS.SHOW_DARK_MODE,      has && s.showDarkModeButton);
+    set(CONTEXT_KEYS.SHOW_NAV_MODE,       has && s.showNavModeButton);
+    set(CONTEXT_KEYS.SHOW_TALKBACK,      has && s.showTalkBackButton);
+    set(CONTEXT_KEYS.SHOW_SELECT_TO_SPEAK, has && s.showSelectToSpeakButton);
+    set(CONTEXT_KEYS.SHOW_FONT_SIZE,      has && s.showFontSizeButton);
+    set(CONTEXT_KEYS.SHOW_DISPLAY_SIZE,   has && s.showDisplaySizeButton);
+    set(CONTEXT_KEYS.SHOW_LAYOUT_BOUNDS,  has && s.showLayoutBoundsButton);
+    set(CONTEXT_KEYS.SHOW_RECORD,        has && s.showRecordButton);
   }
 }

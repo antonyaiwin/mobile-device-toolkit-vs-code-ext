@@ -1,10 +1,12 @@
 import * as vscode from 'vscode';
+import { COMMANDS, VIEW_CONTAINER_ID, VIEW_ID } from '../constants';
 import { AdbService } from '../services/adbService';
 import { DeviceService } from '../services/deviceService';
 import { QuickPickService } from '../ui/quickPickService';
 
 /**
  * Register device-related commands:
+ *  - openControls    → open Device Controls sidebar
  *  - selectDevice    → Quick Pick device selector
  *  - refreshDevices  → manual ADB refresh
  */
@@ -16,15 +18,15 @@ export function registerDeviceCommands(
 ): void {
   // ── Open Device Controls sidebar ─────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.openControls', async () => {
-      await vscode.commands.executeCommand('workbench.view.extension.emulatorDeviceControlsContainer');
-      await vscode.commands.executeCommand('emulatorDeviceControls.focus');
+    vscode.commands.registerCommand(COMMANDS.OPEN_CONTROLS, async () => {
+      await vscode.commands.executeCommand(`workbench.view.extension.${VIEW_CONTAINER_ID}`);
+      await vscode.commands.executeCommand(`${VIEW_ID}.focus`);
     })
   );
 
   // ── Select Device (command palette / toolbar) ─────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.selectDevice', async () => {
+    vscode.commands.registerCommand(COMMANDS.SELECT_DEVICE, async () => {
       await deviceService.refresh();
       const devices = deviceService.devices;
       if (devices.length === 0) {
@@ -37,7 +39,7 @@ export function registerDeviceCommands(
 
   // ── Refresh Device List ───────────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.refreshDevices', async () => {
+    vscode.commands.registerCommand(COMMANDS.REFRESH_DEVICES, async () => {
       const available = await adb.isAdbAvailable();
       if (!available) { AdbService.notifyAdbNotFound(); return; }
       await deviceService.refresh();

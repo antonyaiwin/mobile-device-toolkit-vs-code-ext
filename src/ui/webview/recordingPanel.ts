@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { CONFIG_NAMESPACE } from '../../constants';
 import { AdbService } from '../../services/adbService';
 
 /**
@@ -143,7 +144,7 @@ export class RecordingPanel {
           await vscode.commands.executeCommand('vscode.open', vscode.Uri.file(localPath));
         }
       });
-      const cfg = vscode.workspace.getConfiguration('emulator-extended-controls');
+      const cfg = vscode.workspace.getConfiguration(CONFIG_NAMESPACE);
       if (cfg.get<boolean>('openRecordingAfterSave', false)) {
         await vscode.commands.executeCommand('vscode.open', vscode.Uri.file(localPath));
       }
@@ -297,7 +298,7 @@ export class RecordingPanel {
   // ── Utilities ───────────────────────────────────────────────────────────────
 
   private static _resolveOutputDir(context: vscode.ExtensionContext): string {
-    const cfg = vscode.workspace.getConfiguration('emulator-extended-controls');
+    const cfg = vscode.workspace.getConfiguration(CONFIG_NAMESPACE);
     const userDir = cfg.get<string>('outputDirectory', '');
     if (userDir) { fs.mkdirSync(userDir, { recursive: true }); return userDir; }
     const folders = vscode.workspace.workspaceFolders;

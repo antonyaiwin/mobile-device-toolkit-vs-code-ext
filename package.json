@@ -1,9 +1,9 @@
 {
-  "name": "emulator-extended-controls",
-  "displayName": "Emulator Extended Controls",
-  "description": "Android Studio–style emulator controls inside VS Code's debug toolbar. Manage Dark Mode, Navigation Mode, TalkBack, Font Size, Display Size, Layout Bounds, and Screen Recording without leaving your editor.",
-  "version": "1.0.0",
-  "publisher": "emulator-extended-controls",
+  "name": "mobile-device-toolkit",
+  "displayName": "Mobile Device Toolkit",
+  "description": "Android Studio-style mobile & emulator developer controls inside VS Code. Manage Dark Mode, Navigation Mode, Accessibility (TalkBack & Select to Speak), Display & Font Scaling, Layout Bounds, and Screen Recording directly from your editor.",
+  "version": "0.0.1",
+  "publisher": "aiwin",
   "icon": "assets/icon.png",
   "engines": {
     "vscode": "^1.90.0"
@@ -19,11 +19,12 @@
     "flutter",
     "avd",
     "debug",
-    "toolbar"
+    "toolbar",
+    "mobile"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/emulator-extended-controls"
+    "url": "https://github.com/antonyaiwin/mobile-device-toolkit-vs-code-ext.git"
   },
   "activationEvents": [
     "onStartupFinished"
@@ -33,17 +34,17 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "emulatorDeviceControlsContainer",
-          "title": "Android Device Controls",
+          "id": "mobileDeviceToolkitContainer",
+          "title": "Mobile Device Toolkit",
           "icon": "assets/avd-icon.svg"
         }
       ]
     },
     "views": {
-      "emulatorDeviceControlsContainer": [
+      "mobileDeviceToolkitContainer": [
         {
-          "id": "emulatorDeviceControls",
-          "name": "Device Controls",
+          "id": "mobileDeviceToolkit",
+          "name": "Mobile Device Toolkit",
           "icon": "assets/avd-icon.svg",
           "type": "webview"
         }
@@ -51,281 +52,281 @@
     },
     "commands": [
       {
-        "command": "emulator-extended-controls.openControls",
+        "command": "mobile-device-toolkit.openControls",
         "title": "Open Device Controls",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": {
           "light": "./assets/icons/mobile_menu_light.svg",
           "dark": "./assets/icons/mobile_menu_dark.svg"
         }
       },
       {
-        "command": "emulator-extended-controls.selectDevice",
+        "command": "mobile-device-toolkit.selectDevice",
         "title": "Select Android Device",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": {
           "light": "./assets/icons/mobile_menu_light.svg",
           "dark": "./assets/icons/mobile_menu_dark.svg"
         }
       },
       {
-        "command": "emulator-extended-controls.refreshDevices",
+        "command": "mobile-device-toolkit.refreshDevices",
         "title": "Refresh Device List",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": "$(refresh)"
       },
       {
-        "command": "emulator-extended-controls.startRecording",
+        "command": "mobile-device-toolkit.startRecording",
         "title": "Record Screen",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": "$(record)"
       },
       {
-        "command": "emulator-extended-controls.toolbarToggleDarkMode",
+        "command": "mobile-device-toolkit.toolbarToggleDarkMode",
         "title": "Toggle Dark Mode",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": {
           "light": "./assets/icons/dark_mode_light.svg",
           "dark": "./assets/icons/dark_mode_dark.svg"
         }
       },
       {
-        "command": "emulator-extended-controls.toolbarSetNavMode",
+        "command": "mobile-device-toolkit.toolbarSetNavMode",
         "title": "Navigation Mode…",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": {
           "light": "./assets/icons/steppers_light.svg",
           "dark": "./assets/icons/steppers_dark.svg"
         }
       },
       {
-        "command": "emulator-extended-controls.toolbarToggleTalkBack",
+        "command": "mobile-device-toolkit.toolbarToggleTalkBack",
         "title": "Toggle TalkBack",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": {
           "light": "./assets/icons/text_to_speech_light.svg",
           "dark": "./assets/icons/text_to_speech_dark.svg"
         }
       },
       {
-        "command": "emulator-extended-controls.toolbarToggleSelectToSpeak",
+        "command": "mobile-device-toolkit.toolbarToggleSelectToSpeak",
         "title": "Toggle Select to Speak",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": {
           "light": "./assets/icons/select_to_speak_light.svg",
           "dark": "./assets/icons/select_to_speak_dark.svg"
         }
       },
       {
-        "command": "emulator-extended-controls.toolbarSetFontSize",
+        "command": "mobile-device-toolkit.toolbarSetFontSize",
         "title": "Font Size…",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": {
           "light": "./assets/icons/format_size_light.svg",
           "dark": "./assets/icons/format_size_dark.svg"
         }
       },
       {
-        "command": "emulator-extended-controls.toolbarSetDisplaySize",
+        "command": "mobile-device-toolkit.toolbarSetDisplaySize",
         "title": "Display Size…",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": {
           "light": "./assets/icons/settings_overscan_light.svg",
           "dark": "./assets/icons/settings_overscan_dark.svg"
         }
       },
       {
-        "command": "emulator-extended-controls.toolbarToggleLayoutBounds",
+        "command": "mobile-device-toolkit.toolbarToggleLayoutBounds",
         "title": "Toggle Layout Bounds",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": {
           "light": "./assets/icons/border_horizontal_light.svg",
           "dark": "./assets/icons/border_horizontal_dark.svg"
         }
       },
       {
-        "command": "emulator-extended-controls.avd.refresh",
+        "command": "mobile-device-toolkit.avd.refresh",
         "title": "Refresh Device Controls",
-        "category": "Emulator",
+        "category": "Mobile Device Toolkit",
         "icon": "$(refresh)"
       }
     ],
     "menus": {
       "debug/toolBar": [
         {
-          "command": "emulator-extended-controls.openControls",
-          "when": "emulator-extended-controls.showOpenControls",
+          "command": "mobile-device-toolkit.openControls",
+          "when": "mobile-device-toolkit.showOpenControls",
           "group": "navigation@109"
         },
         {
-          "command": "emulator-extended-controls.toolbarToggleDarkMode",
-          "when": "emulator-extended-controls.showDarkMode",
+          "command": "mobile-device-toolkit.toolbarToggleDarkMode",
+          "when": "mobile-device-toolkit.showDarkMode",
           "group": "navigation@101"
         },
         {
-          "command": "emulator-extended-controls.toolbarSetNavMode",
-          "when": "emulator-extended-controls.showNavMode",
+          "command": "mobile-device-toolkit.toolbarSetNavMode",
+          "when": "mobile-device-toolkit.showNavMode",
           "group": "navigation@102"
         },
         {
-          "command": "emulator-extended-controls.toolbarToggleTalkBack",
-          "when": "emulator-extended-controls.showTalkBack",
+          "command": "mobile-device-toolkit.toolbarToggleTalkBack",
+          "when": "mobile-device-toolkit.showTalkBack",
           "group": "navigation@103"
         },
         {
-          "command": "emulator-extended-controls.toolbarToggleSelectToSpeak",
-          "when": "emulator-extended-controls.showSelectToSpeak",
+          "command": "mobile-device-toolkit.toolbarToggleSelectToSpeak",
+          "when": "mobile-device-toolkit.showSelectToSpeak",
           "group": "navigation@104"
         },
         {
-          "command": "emulator-extended-controls.toolbarSetFontSize",
-          "when": "emulator-extended-controls.showFontSize",
+          "command": "mobile-device-toolkit.toolbarSetFontSize",
+          "when": "mobile-device-toolkit.showFontSize",
           "group": "navigation@105"
         },
         {
-          "command": "emulator-extended-controls.toolbarSetDisplaySize",
-          "when": "emulator-extended-controls.showDisplaySize",
+          "command": "mobile-device-toolkit.toolbarSetDisplaySize",
+          "when": "mobile-device-toolkit.showDisplaySize",
           "group": "navigation@106"
         },
         {
-          "command": "emulator-extended-controls.toolbarToggleLayoutBounds",
-          "when": "emulator-extended-controls.showLayoutBounds",
+          "command": "mobile-device-toolkit.toolbarToggleLayoutBounds",
+          "when": "mobile-device-toolkit.showLayoutBounds",
           "group": "navigation@107"
         },
         {
-          "command": "emulator-extended-controls.startRecording",
-          "when": "emulator-extended-controls.showRecord",
+          "command": "mobile-device-toolkit.startRecording",
+          "when": "mobile-device-toolkit.showRecord",
           "group": "navigation@108"
         }
       ],
       "view/title": [
         {
-          "command": "emulator-extended-controls.avd.refresh",
-          "when": "view == emulatorDeviceControls",
+          "command": "mobile-device-toolkit.avd.refresh",
+          "when": "view == mobileDeviceToolkit",
           "group": "navigation@0"
         }
       ],
       "commandPalette": [
         {
-          "command": "emulator-extended-controls.openControls",
+          "command": "mobile-device-toolkit.openControls",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.selectDevice",
+          "command": "mobile-device-toolkit.selectDevice",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.refreshDevices",
+          "command": "mobile-device-toolkit.refreshDevices",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.toolbarToggleDarkMode",
+          "command": "mobile-device-toolkit.toolbarToggleDarkMode",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.toolbarSetNavMode",
+          "command": "mobile-device-toolkit.toolbarSetNavMode",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.toolbarToggleTalkBack",
+          "command": "mobile-device-toolkit.toolbarToggleTalkBack",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.toolbarToggleSelectToSpeak",
+          "command": "mobile-device-toolkit.toolbarToggleSelectToSpeak",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.toolbarSetFontSize",
+          "command": "mobile-device-toolkit.toolbarSetFontSize",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.toolbarSetDisplaySize",
+          "command": "mobile-device-toolkit.toolbarSetDisplaySize",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.toolbarToggleLayoutBounds",
+          "command": "mobile-device-toolkit.toolbarToggleLayoutBounds",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.startRecording",
+          "command": "mobile-device-toolkit.startRecording",
           "when": "true"
         },
         {
-          "command": "emulator-extended-controls.avd.refresh",
+          "command": "mobile-device-toolkit.avd.refresh",
           "when": "true"
         }
       ]
     },
     "configuration": {
-      "title": "Emulator Extended Controls",
+      "title": "Mobile Device Toolkit",
       "properties": {
-        "emulator-extended-controls.autoDetectDevices": {
+        "mobile-device-toolkit.autoDetectDevices": {
           "order": 1,
           "type": "boolean",
           "default": true,
           "description": "Automatically detect and monitor connected Android devices."
         },
-        "emulator-extended-controls.showOpenControlsButton": {
+        "mobile-device-toolkit.showOpenControlsButton": {
           "order": 2,
           "type": "boolean",
           "default": true,
           "description": "Show the Open Device Controls button on the debug toolbar."
         },
-        "emulator-extended-controls.showDarkModeButton": {
+        "mobile-device-toolkit.showDarkModeButton": {
           "order": 3,
           "type": "boolean",
           "default": false,
           "description": "Show a Dark Mode toggle button in the debug toolbar."
         },
-        "emulator-extended-controls.showNavModeButton": {
+        "mobile-device-toolkit.showNavModeButton": {
           "order": 4,
           "type": "boolean",
           "default": false,
           "description": "Show a Navigation Mode picker button in the debug toolbar."
         },
-        "emulator-extended-controls.showTalkBackButton": {
+        "mobile-device-toolkit.showTalkBackButton": {
           "order": 5,
           "type": "boolean",
           "default": false,
           "description": "Show a TalkBack toggle button in the debug toolbar."
         },
-        "emulator-extended-controls.showSelectToSpeakButton": {
+        "mobile-device-toolkit.showSelectToSpeakButton": {
           "order": 6,
           "type": "boolean",
           "default": false,
           "description": "Show a Select to Speak toggle button in the debug toolbar."
         },
-        "emulator-extended-controls.showFontSizeButton": {
+        "mobile-device-toolkit.showFontSizeButton": {
           "order": 7,
           "type": "boolean",
           "default": false,
           "description": "Show a Font Size picker button in the debug toolbar."
         },
-        "emulator-extended-controls.showDisplaySizeButton": {
+        "mobile-device-toolkit.showDisplaySizeButton": {
           "order": 8,
           "type": "boolean",
           "default": false,
           "description": "Show a Display Size picker button in the debug toolbar."
         },
-        "emulator-extended-controls.showLayoutBoundsButton": {
+        "mobile-device-toolkit.showLayoutBoundsButton": {
           "order": 9,
           "type": "boolean",
           "default": false,
           "description": "Show a Layout Bounds toggle button in the debug toolbar."
         },
-        "emulator-extended-controls.showRecordButton": {
+        "mobile-device-toolkit.showRecordButton": {
           "order": 10,
           "type": "boolean",
           "default": false,
           "description": "Show a Screen Recording button in the debug toolbar."
         },
-        "emulator-extended-controls.openRecordingAfterSave": {
+        "mobile-device-toolkit.openRecordingAfterSave": {
           "order": 11,
           "type": "boolean",
           "default": false,
           "description": "Automatically open the saved screen recording in the VS Code media viewer after stopping."
         },
-        "emulator-extended-controls.outputDirectory": {
+        "mobile-device-toolkit.outputDirectory": {
           "order": 12,
           "type": "string",
           "default": "",

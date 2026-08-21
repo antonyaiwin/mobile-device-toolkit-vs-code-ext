@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { ExtensionSettings } from '../models/settings';
 
-const NS = 'emulator-extended-controls';
+import { CONFIG_NAMESPACE } from '../constants';
 
 /** Reads extension settings and fires an event on changes. */
 export class SettingsService {
@@ -11,14 +11,14 @@ export class SettingsService {
 
   constructor() {
     this.disposable = vscode.workspace.onDidChangeConfiguration((e) => {
-      if (e.affectsConfiguration(NS)) {
+      if (e.affectsConfiguration(CONFIG_NAMESPACE)) {
         this._onDidChangeSettings.fire(this.getSettings());
       }
     });
   }
 
   getSettings(): ExtensionSettings {
-    const c = vscode.workspace.getConfiguration(NS);
+    const c = vscode.workspace.getConfiguration(CONFIG_NAMESPACE);
     return {
       autoDetectDevices:      c.get<boolean>('autoDetectDevices', true),
       showDarkModeButton:     c.get<boolean>('showDarkModeButton', false),

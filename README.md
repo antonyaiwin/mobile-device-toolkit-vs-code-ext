@@ -1,154 +1,181 @@
-# Emulator Extended Controls
+# Mobile Device Toolkit
 
-> Android Studio–style emulator controls, right inside VS Code's debug toolbar.
-
----
-
-## Features
-
-| Feature | Details |
-|---|---|
-| 🎛️ **Emulator Controls Popup** | One-click access to all controls via a native VS Code Quick Pick menu |
-| 📱 **Multi-Device Support** | Automatically detect multiple connected devices; switch instantly |
-| 🌙 **Dark Mode Toggle** | Enable / disable system dark mode on the emulator |
-| 🔤 **Font Size Control** | Cycle through Small, Default, Large, Largest presets |
-| 📐 **Display Density** | Adjust DPI from 280 to 560, or reset to default |
-| 🏗️ **Layout Bounds** | Show or hide view boundaries for UI debugging |
-| 📸 **Screenshot** | Capture and save a screenshot with one click |
-| 🎬 **Screen Recording** | Record up to 3 minutes of device screen |
-| ⌨️ **Send Text** | Type text directly into the focused input field |
-| 🔄 **Rotate Device** | Toggle device orientation |
-| ⚙️ **Optional Toolbar Buttons** | Enable per-command quick-access icons in the debug toolbar |
+> **Android Studio-style mobile & emulator developer controls inside VS Code's debug toolbar and sidebar.** Easily manage Dark Mode, Navigation Mode, Accessibility (TalkBack & Select to Speak), Display & Font Scaling, Layout Bounds, and Screen Recording directly from your editor.
 
 ---
 
-## Requirements
+## Screenshots
 
-- **VS Code** 1.120.0 or later  
-- **Android SDK Platform Tools** (`adb` must be available on your PATH)  
-- At least one connected Android device or running emulator  
+<br>
 
----
+<p align="center">
+  <img src="assets/docs/screenshot_1.gif" width="48%" alt="Mobile Device Toolkit Overview Demo">
+  &nbsp;&nbsp;
+  <img src="assets/docs/screenshot_2.gif" width="48%" alt="Mobile Device Toolkit Interactive Controls Demo">
+</p>
 
-## Getting Started
-
-1. Install the extension.  
-2. Start a debug session (or just open a project).  
-3. Connect an Android device / start an emulator.  
-4. The **$(device-mobile) Emulator Controls** icon appears in the debug toolbar.  
-5. Click it to open the controls popup.
+<br>
 
 ---
 
-## Extension Settings
+## What the Extension Does
 
-All settings are under the `emulator-extended-controls.*` namespace.
+When developing mobile applications with **Flutter**, **React Native**, or **Android Native** in VS Code, toggling device settings (like dark mode, font scale, or layout bounds) normally requires opening Android Studio's Extended Controls, digging through Android OS Settings menus, or executing manual ADB CLI commands.
 
-| Setting | Type | Default | Description |
-|---|---|---|---|
-| `autoDetectDevices` | boolean | `true` | Poll ADB for connected devices automatically |
-| `showDarkModeButton` | boolean | `false` | Show a Dark Mode toggle in the toolbar |
-| `showScreenshotButton` | boolean | `false` | Show a Screenshot button in the toolbar |
-| `showRecordButton` | boolean | `false` | Show a Screen Record button in the toolbar |
-| `showLayoutBoundsButton` | boolean | `false` | Show a Layout Bounds toggle in the toolbar |
-| `showRotateButton` | boolean | `false` | Show a Rotate Device button in the toolbar |
-| `outputDirectory` | string | `""` | Directory for screenshots and recordings (defaults to `emulator-captures/` in workspace root) |
+**Mobile Device Toolkit** brings these essential controls right into VS Code:
+
+- A dedicated **Sidebar Panel** in the Activity Bar for visual management.
+- Quick-action buttons integrated into VS Code's **Debug Toolbar**.
+- Command Palette integration for keyboard shortcuts.
+
+---
+
+## Features & Demos
+
+| Feature                    | Details                                                                                                              | Preview                                                                                                                                         |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Sidebar Control Panel**  | Full control webview interface in the Activity Bar. Click on the device name bar at the top to switch active devices | <img src="assets/docs/sidebar-preview.png" width="350" alt="Sidebar Control Panel">                                                             |
+| **Debug Toolbar Actions**  | Configurable quick-action icons directly on the debug bar                                                            | <img src="assets/docs/toolbar-preview.png" width="350" alt="Debug Toolbar">                                                                     |
+| **Dark Mode Toggle**       | Toggle system-wide Light and Dark themes instantly                                                                   | <img src="assets/docs/dark-mode.png" width="350" alt="Dark Mode">                                                                               |
+| **Navigation Mode**        | Switch between Gesture, 2-Button, and 3-Button navigation styles                                                     | <img src="assets/docs/navigation-mode.png" width="350" alt="Navigation Mode">                                                                   |
+| **Font & Display Scaling** | Adjust font sizes (Small to Largest) and display density (280–560 DPI)                                               | <img src="assets/docs/font-scaling.png" width="350" alt="Font Scaling"> <img src="assets/docs/display-size.png" width="350" alt="Display Size"> |
+| **Accessibility Tools**    | Toggle TalkBack screen reader and Select to Speak accessibility services                                             | <img src="assets/docs/talkback.png" width="350" alt="TalkBack"> <img src="assets/docs/select-to-speak.png" width="350" alt="Select to Speak">   |
+| **Layout Bounds**          | Show or hide view boundary borders for pixel-perfect UI debugging                                                    | <img src="assets/docs/layout-bounds.png" width="350" alt="Layout Bounds">                                                                       |
+| **Screen Recording**       | Record device screen (up to 3 minutes) with optional auto-open in editor                                             | <img src="assets/docs/screen-recording.png" width="350" alt="Screen Recording">                                                                 |
+| **Multi-Device Support**   | Auto-detect multiple devices; click the device name header at the top of the sidebar view to switch instantly        | <img src="assets/docs/device-switcher.png" width="350" alt="Device Switcher">                                                                   |
+
+---
+
+## Installation Instructions
+
+### Prerequisites
+
+1. **VS Code** 1.90.0 or higher.
+2. **Android SDK Platform-Tools** (`adb` must be installed and added to your system `PATH`).
+   - Test by running `adb version` in your terminal.
+
+### Installing from VS Code Marketplace
+
+1. Open VS Code.
+2. Go to **Extensions** (`Ctrl+Shift+X` / `Cmd+Shift+X`).
+3. Search for **Mobile Device Toolkit**.
+4. Click **Install**.
+
+### Installing from VSIX Package
+
+```bash
+code --install-extension mobile-device-toolkit-0.0.1.vsix
+```
+
+---
+
+## Usage Examples
+
+### 1. Activity Bar Sidebar
+
+1. Click the **Mobile Device Toolkit** icon on the VS Code Activity Bar (left sidebar).
+2. Connected Android emulators/devices will automatically appear.
+3. Click on the device name header (e.g. `Pixel 7 Pro (emulator-5554)`) at the top of the sidebar view anytime to change the active device.
+4. Use the toggle buttons, dropdowns, and screen recording controls to manage the device in real-time.
+
+### 2. Debug Toolbar Quick Actions
+
+When you start a debug session (e.g., `Flutter: Run & Debug` or `React Native`):
+
+1. The **Mobile Device Toolkit** icon appears on the floating Debug Toolbar.
+2. Click it to bring focus to the device controls.
+3. Enable additional quick-action icons (e.g., Dark Mode, Record Screen) via settings to customize your debug toolbar.
+
+### 3. Command Palette
+
+Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) and type **Mobile Device Toolkit**:
+
+- `Select Android Device`
+- `Refresh Device List`
+- `Toggle Dark Mode`
+- `Navigation Mode…`
+- `Toggle TalkBack`
+- `Toggle Select to Speak`
+- `Font Size…`
+- `Display Size…`
+- `Toggle Layout Bounds`
+- `Record Screen`
+
+---
+
+## Configuration Options
+
+Customize settings in **Settings** (`Ctrl+,` / `Cmd+,`) under **Mobile Device Toolkit** (`mobile-device-toolkit.*`).
+
+| Setting                   | Type      | Default | Description                                                                                  |
+| ------------------------- | --------- | ------- | -------------------------------------------------------------------------------------------- |
+| `autoDetectDevices`       | `boolean` | `true`  | Automatically detect and monitor connected Android devices via ADB polling.                  |
+| `showOpenControlsButton`  | `boolean` | `true`  | Show the Open Device Controls button on the debug toolbar when a device is connected.        |
+| `showDarkModeButton`      | `boolean` | `false` | Show a Dark Mode toggle button directly on the debug toolbar.                                |
+| `showNavModeButton`       | `boolean` | `false` | Show a Navigation Mode (Gesture vs 3-Button) picker button on the debug toolbar.             |
+| `showTalkBackButton`      | `boolean` | `false` | Show a TalkBack accessibility toggle button on the debug toolbar.                            |
+| `showSelectToSpeakButton` | `boolean` | `false` | Show a Select to Speak accessibility toggle button on the debug toolbar.                     |
+| `showFontSizeButton`      | `boolean` | `false` | Show a Font Size picker button on the debug toolbar.                                         |
+| `showDisplaySizeButton`   | `boolean` | `false` | Show a Display Size picker button on the debug toolbar.                                      |
+| `showLayoutBoundsButton`  | `boolean` | `false` | Show a Layout Bounds toggle button on the debug toolbar.                                     |
+| `showRecordButton`        | `boolean` | `false` | Show a Screen Recording button on the debug toolbar.                                         |
+| `openRecordingAfterSave`  | `boolean` | `true`  | Automatically open saved screen recordings in the VS Code media viewer.                      |
+| `outputDirectory`         | `string`  | `""`    | Directory to save screen recordings. Defaults to `emulator-captures/` in the workspace root. |
 
 ### Example `settings.json`
 
 ```json
 {
-  "emulator-extended-controls.autoDetectDevices": true,
-  "emulator-extended-controls.showDarkModeButton": true,
-  "emulator-extended-controls.showScreenshotButton": true,
-  "emulator-extended-controls.showRecordButton": false,
-  "emulator-extended-controls.showLayoutBoundsButton": true,
-  "emulator-extended-controls.showRotateButton": false,
-  "emulator-extended-controls.outputDirectory": ""
+  "mobile-device-toolkit.autoDetectDevices": true,
+  "mobile-device-toolkit.showOpenControlsButton": true,
+  "mobile-device-toolkit.showDarkModeButton": true,
+  "mobile-device-toolkit.showNavModeButton": true,
+  "mobile-device-toolkit.showLayoutBoundsButton": true,
+  "mobile-device-toolkit.showRecordButton": true,
+  "mobile-device-toolkit.openRecordingAfterSave": true,
+  "mobile-device-toolkit.outputDirectory": "captures/"
 }
 ```
 
 ---
 
-## Available Commands
+## Known Issues & Troubleshooting
 
-All commands are available from the **Command Palette** (`Ctrl+Shift+P` / `Cmd+Shift+P`):
-
-| Command | Description |
-|---|---|
-| `Emulator: Open Emulator Controls` | Open the main controls popup |
-| `Emulator: Select Android Device` | Show the device selector |
-| `Emulator: Refresh Device List` | Manually refresh connected devices |
-| `Emulator: Toggle Dark Mode` | Toggle dark/light theme on selected device |
-| `Emulator: Take Screenshot` | Capture a screenshot |
-| `Emulator: Record Screen` | Start a screen recording (max 3 min) |
-| `Emulator: Toggle Layout Bounds` | Show/hide layout bounds |
-| `Emulator: Rotate Device` | Toggle device orientation |
+- **"ADB command failed" / "ADB not found"**:  
+  Ensure `adb` is added to your environment variables (`PATH`). On Windows, verify `%ANDROID_HOME%\platform-tools` is in System Environment Variables.
+- **Screen Recording limit**:  
+  Android OS restricts `screenrecord` commands to a maximum duration of 3 minutes per recording.
 
 ---
 
-## Toolbar Visibility
+## Contribution Guidelines
 
-The primary toolbar icon appears only when:
+Contributions, bug reports, and feature requests are welcome!
 
-- ADB is available on the system PATH  
-- At least one Android device is connected and online  
+### Local Development Setup
 
-Optional quick-action buttons additionally require the user to enable them in settings.
+1. **Clone the repository**:
 
----
+   ```bash
+   git clone https://github.com/antonyaiwin/mobile-device-toolkit-vs-code-ext.git
+   cd mobile-device-toolkit-vs-code-ext
+   ```
 
-## Multi-Device Workflow
+2. **Install dependencies**:
 
-When multiple devices are connected, a **device selector** is shown before the main controls menu. The selected device persists during the session and is used by all toolbar buttons and popup actions.
+   ```bash
+   npm install
+   ```
 
----
+3. **Start Watch Mode**:
 
-## Architecture
+   ```bash
+   npm run watch
+   ```
 
-```
-src/
-├── extension.ts              ← Activation entry point
-├── models/
-│   ├── device.ts             ← AndroidDevice interface, presets
-│   └── settings.ts           ← ExtensionSettings interface
-├── services/
-│   ├── adbService.ts         ← ADB CLI wrapper
-│   ├── deviceService.ts      ← Device detection, selection, polling
-│   ├── toolbarService.ts     ← Context key management for toolbar visibility
-│   └── settingsService.ts    ← Typed settings access + change events
-├── ui/
-│   └── quickPickService.ts   ← All Quick Pick menus and actions
-└── commands/
-    ├── deviceCommands.ts     ← Device-related command registrations
-    └── captureCommands.ts    ← Capture & quick-action command registrations
-```
-
----
-
-## Platform Support
-
-| Platform | Supported |
-|---|---|
-| Windows | ✅ |
-| macOS | ✅ |
-| Linux | ✅ |
-
----
-
-## Troubleshooting
-
-**"ADB not found"**  
-Ensure `adb` is installed and on your system PATH. Install [Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools).
-
-**Toolbar icon not showing**  
-Verify a device is connected (`adb devices` in terminal). The icon only appears during an active debug session with a device online.
-
-**Screenshot/Recording saved where?**  
-By default in an `emulator-captures/` folder inside your workspace root. Configure `emulator-extended-controls.outputDirectory` to change the location.
-
----
+4. **Launch Extension in Debugger**:
+   - Press `F5` in VS Code to open an **Extension Development Host** window.
 
 ## License
 
-MIT
+This project is licensed under the [MIT License](LICENSE).

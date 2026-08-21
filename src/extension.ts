@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { COMMANDS, EXTENSION_ID, EXTENSION_NAME } from './constants';
 import { AdbService } from './services/adbService';
 import { DeviceService } from './services/deviceService';
 import { SettingsService } from './services/settingsService';
@@ -10,7 +11,7 @@ import { registerCaptureCommands } from './commands/captureCommands';
 import { registerToolbarCommands } from './commands/toolbarCommands';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
-  console.log('[emulator-extended-controls] Activating…');
+  console.log(`[${EXTENSION_ID}] Activating…`);
 
   const adbService       = new AdbService();
   const settingsService  = new SettingsService();
@@ -33,7 +34,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // Refresh command wired to view/title $(refresh) button
   context.subscriptions.push(
-    vscode.commands.registerCommand('emulator-extended-controls.avd.refresh', async () => {
+    vscode.commands.registerCommand(COMMANDS.AVD_REFRESH, async () => {
       await deviceService.refresh();
       controlsView.refresh();
     })
@@ -57,7 +58,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const adbAvailable = await adbService.isAdbAvailable();
   if (!adbAvailable) {
     vscode.window.showWarningMessage(
-      'Emulator Extended Controls: ADB not found in PATH.', 'Learn More'
+      `${EXTENSION_NAME}: ADB not found in PATH.`, 'Learn More'
     ).then((s) => {
       if (s === 'Learn More') {
         vscode.env.openExternal(vscode.Uri.parse('https://developer.android.com/tools/releases/platform-tools'));
@@ -65,9 +66,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     });
   }
 
-  console.log('[emulator-extended-controls] Activated.');
+  console.log(`[${EXTENSION_ID}] Activated.`);
 }
 
 export function deactivate(): void {
-  console.log('[emulator-extended-controls] Deactivated.');
+  console.log(`[${EXTENSION_ID}] Deactivated.`);
 }

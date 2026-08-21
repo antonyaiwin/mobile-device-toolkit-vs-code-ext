@@ -6,7 +6,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [1.0.0] – 2026-06-06
+## [0.0.1] – 2026-06-06
 
 ### Added
 
@@ -26,7 +26,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Screen Recording
   - Layout Bounds toggle
   - Rotate Device
-- Typed extension settings with `emulator-extended-controls.*` namespace
+- Typed extension settings with `mobile-device-toolkit.*` namespace
 - Graceful error handling for: ADB not found, no devices, unauthorized devices, command failures
 - Screenshots saved as PNG to `emulator-captures/` in workspace root
 - Screen recordings saved as MP4 with automatic device cleanup
@@ -34,7 +34,3 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Full README documentation
 
 ---
-
-## [0.0.1] – Initial scaffold
-
-- VS Code extension scaffold generated
