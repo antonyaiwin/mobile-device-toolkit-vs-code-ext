@@ -90,22 +90,19 @@ export class RecordingPanel {
     this._panel.webview.onDidReceiveMessage(async (msg: { type: string }) => {
       if (msg.type === 'stop') {
         await this._stopAndSave();
-        this._panel.dispose();
       }
     }, null, this._disposables);
 
-    // When recording is stopped externally (e.g. from the activity bar sidebar),
-    // show "Saving…" in the panel then auto-close after a short delay.
+    // When recording is stopped externally, show "Saving…" in the panel
     adb.onRecordingChanged((isRecording) => {
       if (!isRecording && !this._stopped) {
-        this._stopped = true; // prevent _stopAndSave double-fire
+        this._stopped = true;
         try { this._panel.webview.postMessage({ type: 'saving' }); } catch { /* */ }
-        setTimeout(() => { try { this._panel.dispose(); } catch { /* */ } }, 2500);
       }
     }, null, this._disposables);
 
     // Auto-save when 3-minute Android timeout is reached
-    adb.onRecordingAutoEnded(async ({ serial }) => {
+    adb.onRecordingAutoEnded(async () => {
       if (!this._stopped) {
         await this._stopAndSave();
       }
@@ -163,6 +160,12 @@ export class RecordingPanel {
       vscode.window.showErrorMessage(`Failed to save recording: ${(err as Error).message}`);
     } finally {
       RecordingPanel._isStopping = false;
+      // Close the recording panel tab if open
+      if (RecordingPanel._instance) {
+        const instance = RecordingPanel._instance;
+        RecordingPanel._instance = undefined;
+        try { instance._panel.dispose(); } catch { /* panel may already be disposed */ }
+      }
     }
   }
 
