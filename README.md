@@ -8,11 +8,10 @@
 
 <br>
 
-<p align="center">
-  <img src="assets/docs/screenshot_1.gif" width="48%" alt="Mobile Toolkit Overview Demo">
-  &nbsp;&nbsp;
-  <img src="assets/docs/screenshot_2.gif" width="48%" alt="Mobile Toolkit Interactive Controls Demo">
-</p>
+<img src="assets/docs/screenshot_1.gif" width="100%" alt="Mobile Toolkit Overview Demo">
+<br/>
+<br/>
+<img src="assets/docs/screenshot_2.gif" width="100%" alt="Mobile Toolkit Interactive Controls Demo">
 
 <br>
 
