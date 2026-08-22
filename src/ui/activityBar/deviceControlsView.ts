@@ -12,6 +12,7 @@ import {
 type InMsg =
   | { type: 'ready' }
   | { type: 'selectDevice' }
+  | { type: 'openSettings' }
   | { type: 'setDarkTheme'; value: boolean }
   | { type: 'setNavigationMode'; value: string }
   | { type: 'setTalkBack'; value: boolean }
@@ -67,6 +68,12 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
 
   private async _refresh(): Promise<void> {
     if (!this._view?.visible) { return; }
+    const isAdbAvailable = await this.adb.isAdbAvailable();
+    if (!isAdbAvailable) {
+      this._post({ type: 'adbMissing' });
+      return;
+    }
+
     const device = this.deviceService.selectedDevice;
     if (!device) { this._post({ type: 'noDevice' }); return; }
     try {
@@ -81,6 +88,11 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
 
   private async _handle(msg: InMsg): Promise<void> {
     if (msg.type === 'ready' || msg.type === 'refresh') { await this._refresh(); return; }
+
+    if (msg.type === 'openSettings') {
+      await vscode.commands.executeCommand('workbench.action.openSettings', 'mobile-toolkit.androidSdkPath');
+      return;
+    }
 
     if (msg.type === 'selectDevice') {
       await this.deviceService.refresh();
@@ -297,6 +309,22 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
               animation: blink 1.2s ease-in-out infinite; }
   .stop-sq  { width:8px; height:8px; background:currentColor; border-radius:1px; flex-shrink:0; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+  .btn-config {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: var(--vscode-button-background, #0078d4);
+    color: var(--vscode-button-foreground, #fff);
+    border: none;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-config:hover {
+    background: var(--vscode-button-hoverBackground, #026ec1);
+  }
 </style>
 </head>
 <body>
@@ -310,6 +338,15 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
 
 <div class="state-msg" id="loadingMsg">Loading…</div>
 <div class="state-msg" id="noDeviceMsg">No device connected.<br>Connect an Android device or start an emulator.</div>
+<div class="state-msg" id="adbMissingMsg">
+  <div style="font-size: 20px; margin-bottom: 6px;">⚠️</div>
+  <strong>ADB Not Found</strong><br>
+  <span style="font-size: 11px; opacity: 0.85; display: inline-block; margin-top: 4px; line-height: 1.4;">
+    Android SDK Platform Tools (adb) could not be located.
+  </span>
+  <br>
+  <button class="btn-config" id="openSdkSettingsBtn">Configure SDK Path</button>
+</div>
 <div class="state-msg" id="errorMsg"></div>
 
 <div class="settings" id="settings">
@@ -373,6 +410,7 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
 
   // ── Wire controls ─────────────────────────────────────────────────────────
   $('deviceBar').addEventListener('click', () => vscode.postMessage({ type: 'selectDevice' }));
+  $('openSdkSettingsBtn').addEventListener('click', () => vscode.postMessage({ type: 'openSettings' }));
   $('darkTheme').addEventListener('change', e => vscode.postMessage({ type: 'setDarkTheme', value: e.target.checked }));
   $('navigationMode').addEventListener('change', e => vscode.postMessage({ type: 'setNavigationMode', value: e.target.value }));
   $('talkBack').addEventListener('change', e => vscode.postMessage({ type: 'setTalkBack', value: e.target.checked }));
@@ -387,12 +425,23 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
 
   // ── Handle messages ───────────────────────────────────────────────────────
   window.addEventListener('message', ({ data: msg }) => {
+    if (msg.type === 'adbMissing') {
+      $('deviceBar').style.display = 'none';
+      $('settings').classList.remove('visible');
+      $('recArea').classList.remove('visible');
+      $('loadingMsg').classList.remove('visible');
+      $('noDeviceMsg').classList.remove('visible');
+      $('errorMsg').classList.remove('visible');
+      $('adbMissingMsg').classList.add('visible');
+      return;
+    }
     if (msg.type === 'setState') {
       const s = msg.state;
       $('deviceBar').style.display = 'flex';
       $('deviceName').textContent = msg.deviceName;
       $('loadingMsg').classList.remove('visible');
       $('noDeviceMsg').classList.remove('visible');
+      $('adbMissingMsg').classList.remove('visible');
       $('errorMsg').classList.remove('visible');
       $('settings').classList.add('visible');
       $('recArea').classList.add('visible');
@@ -413,6 +462,7 @@ export class DeviceControlsView implements vscode.WebviewViewProvider {
       $('settings').classList.remove('visible');
       $('recArea').classList.remove('visible');
       $('loadingMsg').classList.remove('visible');
+      $('adbMissingMsg').classList.remove('visible');
       $('noDeviceMsg').classList.add('visible');
       return;
     }
