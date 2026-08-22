@@ -31,6 +31,7 @@ export class SettingsService {
       showLayoutBoundsButton: c.get<boolean>('showLayoutBoundsButton', false),
       showRecordButton:       c.get<boolean>('showRecordButton', false),
       outputDirectory:        c.get<string>('outputDirectory', ''),
+      androidSdkPath:         c.get<string>('androidSdkPath', ''),
     };
   }
 

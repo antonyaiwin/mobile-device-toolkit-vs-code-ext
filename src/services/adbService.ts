@@ -24,6 +24,24 @@ export class AdbService {
   get currentRemotePath(): string | null { return this._currentRemotePath; }
   get recordingSerial(): string | null { return this._recordingSerial; }
 
+  /** Get current resolved ADB executable path */
+  getAdbPath(): string { return this.adbPath; }
+
+  /** Dynamically set ADB executable path */
+  setAdbPath(path: string): void {
+    if (path && path.trim()) {
+      this.adbPath = path.trim();
+    }
+  }
+
+  /** Helper to safely format ADB path for CLI execution */
+  private getExecPath(): string {
+    const trimmed = this.adbPath.trim();
+    return trimmed.includes(' ') && !trimmed.startsWith('"')
+      ? `"${trimmed}"`
+      : trimmed;
+  }
+
   /** Fires `true` when recording starts, `false` when it stops. */
   private readonly _onRecordingChanged = new vscode.EventEmitter<boolean>();
   readonly onRecordingChanged = this._onRecordingChanged.event;
@@ -35,14 +53,14 @@ export class AdbService {
   // ── Availability ────────────────────────────────────────────────────────────
 
   async isAdbAvailable(): Promise<boolean> {
-    try { await execAsync(`${this.adbPath} version`); return true; }
+    try { await execAsync(`${this.getExecPath()} version`); return true; }
     catch { return false; }
   }
 
   // ── Device listing ──────────────────────────────────────────────────────────
 
   async getRawDeviceList(): Promise<string> {
-    const { stdout } = await execAsync(`${this.adbPath} devices -l`);
+    const { stdout } = await execAsync(`${this.getExecPath()} devices -l`);
     return stdout;
   }
 
@@ -53,7 +71,7 @@ export class AdbService {
         //   Pixel_7
         //   OK
         // This is the most reliable source for the user-visible AVD name.
-        const { stdout } = await execAsync(`${this.adbPath} -s ${serial} emu avd name`);
+        const { stdout } = await execAsync(`${this.getExecPath()} -s ${serial} emu avd name`);
         const firstLine = stdout.split('\n')[0].trim();
         if (firstLine && firstLine !== 'OK' && firstLine !== '') {
           return firstLine.replace(/_/g, ' ');
@@ -71,7 +89,7 @@ export class AdbService {
   // ── Shell / raw commands ────────────────────────────────────────────────────
 
   async runShellCommand(serial: string, command: string): Promise<string> {
-    const { stdout } = await execAsync(`${this.adbPath} -s ${serial} shell ${command}`);
+    const { stdout } = await execAsync(`${this.getExecPath()} -s ${serial} shell ${command}`);
     return stdout.trim();
   }
 
@@ -378,8 +396,8 @@ export class AdbService {
 
       // 4. Short sdcard flush pause, then pull
       await new Promise<void>((r) => setTimeout(r, 500));
-      await execAsync(`${this.adbPath} -s ${serial} pull ${remotePath} "${localPath}"`);
-      await execAsync(`${this.adbPath} -s ${serial} shell rm -f ${remotePath}`);
+      await execAsync(`${this.getExecPath()} -s ${serial} pull ${remotePath} "${localPath}"`);
+      await execAsync(`${this.getExecPath()} -s ${serial} shell rm -f ${remotePath}`);
     } finally {
       this._recordingProcess = null;
       this._currentRemotePath = null;
@@ -391,11 +409,11 @@ export class AdbService {
 
 
   async pullFile(serial: string, remote: string, local: string): Promise<void> {
-    await execAsync(`${this.adbPath} -s ${serial} pull ${remote} "${local}"`);
+    await execAsync(`${this.getExecPath()} -s ${serial} pull ${remote} "${local}"`);
   }
 
   async removeRemoteFile(serial: string, remote: string): Promise<void> {
-    await execAsync(`${this.adbPath} -s ${serial} shell rm -f ${remote}`);
+    await execAsync(`${this.getExecPath()} -s ${serial} shell rm -f ${remote}`);
   }
 
   // ── Helpers ─────────────────────────────────────────────────────────────────

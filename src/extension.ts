@@ -11,11 +11,21 @@ import { registerDeviceCommands } from './commands/deviceCommands';
 import { registerCaptureCommands } from './commands/captureCommands';
 import { registerToolbarCommands } from './commands/toolbarCommands';
 
+import { SdkManager } from './services/sdkManager';
+
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   console.log(`[${EXTENSION_ID}] Activating…`);
 
   const adbService       = new AdbService();
+  const sdkManager       = new SdkManager();
   const settingsService  = new SettingsService();
+
+  // Detect Android SDK and set ADB path
+  const initialSdkInfo = await sdkManager.detect();
+  if (initialSdkInfo?.adbPath) {
+    adbService.setAdbPath(initialSdkInfo.adbPath);
+  }
+
   const deviceService    = new DeviceService(adbService);
   const toolbarService   = new ToolbarService(deviceService, settingsService);
   const quickPickService = new QuickPickService(deviceService);
@@ -51,11 +61,15 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     await RecordingPanel.stopCurrent(context, adbService, serial);
   });
 
-  // ── Polling ─────────────────────────────────────────────────────────────
+  // ── Polling & Settings Changes ───────────────────────────────────────────
   const settings = settingsService.getSettings();
   deviceService.startPolling(settings.autoDetectDevices);
 
-  settingsService.onDidChangeSettings((s) => {
+  settingsService.onDidChangeSettings(async (s) => {
+    const updatedSdkInfo = await sdkManager.detect();
+    if (updatedSdkInfo?.adbPath) {
+      adbService.setAdbPath(updatedSdkInfo.adbPath);
+    }
     deviceService.stopPolling();
     deviceService.startPolling(s.autoDetectDevices);
     toolbarService.refresh();

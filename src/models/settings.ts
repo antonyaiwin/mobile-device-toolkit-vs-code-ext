@@ -12,4 +12,5 @@ export interface ExtensionSettings {
   showLayoutBoundsButton: boolean;
   showRecordButton: boolean;
   outputDirectory: string;
+  androidSdkPath?: string;
 }
