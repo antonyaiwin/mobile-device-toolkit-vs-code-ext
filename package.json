@@ -2,7 +2,7 @@
   "name": "mobile-toolkit",
   "displayName": "Mobile Toolkit",
   "description": "Android Studio-style mobile & emulator developer controls. Manage Dark Mode, Navigation Mode, Accessibility (TalkBack & Select to Speak), Display & Font Scaling, Layout Bounds, and Screen Recording directly from your editor.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "publisher": "aiwin",
   "license": "MIT",
   "homepage": "https://github.com/antonyaiwin/mobile-toolkit-vs-code-ext#readme",
